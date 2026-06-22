@@ -1,32 +1,35 @@
 # AI Travel Planner
 
-An AI-powered travel planning application built with Next.js 15, React 19, Prisma, and OpenRouter. Generate intelligent itineraries, get location suggestions, receive insider tips, and chat with an AI travel assistant.
+An AI-powered travel planning application built with **Next.js 16**, **React 19**, **Prisma**, and **OpenRouter**. Generate intelligent itineraries, get location suggestions, receive insider tips, and chat with an AI travel assistant.
 
 ## Features
 
-- **AI Itinerary Generator** - Generate full day-by-day itineraries from your trip details
-- **AI Location Suggester** - Get smart location recommendations for your trip
-- **AI Trip Summary** - Auto-generate trip summaries, packing lists, and budget estimates
-- **AI Location Tips** - Get insider tips for each destination
-- **AI Travel Chat** - Streaming chat assistant for travel advice
-- **Interactive Maps** - Visualize destinations with Google Maps
-- **3D Globe** - View your travel journey on an interactive globe
-- **Drag & Drop Itinerary** - Reorder destinations with drag and drop
-- **Image Upload** - Upload trip cover images via UploadThing
-- **GitHub OAuth** - Sign in with GitHub via NextAuth
+- **AI Itinerary Generator** — Generate full day-by-day itineraries from your trip details
+- **AI Location Suggester** — Get smart location recommendations for your trip
+- **AI Trip Summary** — Auto-generate trip summaries, packing lists, and budget estimates
+- **AI Location Tips** — Get insider tips for each destination
+- **AI Travel Chat** — Streaming chat assistant for travel advice
+- **Interactive Maps** — Visualize destinations with Google Maps
+- **3D Globe** — View your travel journey on an interactive globe
+- **Drag & Drop Itinerary** — Reorder destinations with drag and drop
+- **Image Upload** — Upload trip cover images via UploadThing
+- **GitHub OAuth** — Sign in with GitHub via NextAuth
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router, Turbopack)
-- **UI:** React 19, Tailwind CSS 4, shadcn/ui components
-- **Database:** PostgreSQL with Prisma ORM
-- **Auth:** NextAuth 5 (GitHub OAuth)
-- **AI:** OpenRouter API (OpenAI-compatible, supports Gemini, Claude, GPT, and more)
-- **Maps:** @react-google-maps/api
-- **Globe:** react-globe.gl + Three.js
-- **File Upload:** UploadThing
-- **DnD:** @dnd-kit
-- **Testing:** Vitest
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| UI | React 19, Tailwind CSS 4, shadcn/ui components |
+| Database | PostgreSQL with Prisma ORM |
+| Auth | NextAuth 5 (GitHub OAuth) |
+| AI | OpenRouter API (OpenAI-compatible, supports Gemini, Claude, GPT, and more) |
+| Maps | @react-google-maps/api |
+| Globe | react-globe.gl + Three.js |
+| File Upload | UploadThing |
+| DnD | @dnd-kit |
+| Testing | Vitest + React Testing Library |
+| Language | TypeScript 5 |
 
 ## Getting Started
 
@@ -43,7 +46,7 @@ An AI-powered travel planning application built with Next.js 15, React 19, Prism
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/MohammadMuntasirKabir/ai-travel-planner.git
+   git clone git@github.com:MohammadMuntasirKabir/ai-travel-planner.git
    cd ai-travel-planner
    ```
 
@@ -54,13 +57,13 @@ An AI-powered travel planning application built with Next.js 15, React 19, Prism
 
 3. **Set up environment variables**
    ```bash
-   cp .env.example .env
+   cp .env.example .env.local
    ```
 
    Required environment variables:
    ```
    # Database
-   DATABASE_URL="postgresql://user:password@localhost:5432/travel_planner"
+   DATABASE_URL="postgresql://user:pass@localhost:5432/travel_planner"
 
    # NextAuth
    AUTH_SECRET="your-random-secret"

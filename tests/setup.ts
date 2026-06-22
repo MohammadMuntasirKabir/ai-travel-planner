@@ -9,19 +9,23 @@ import type { NextRequest } from "next/server";
 const mockChatCompletion = vi.fn();
 
 vi.mock("openai", () => {
-  return {
-    default: vi.fn().mockImplementation(() => ({
+  const mockCreate = vi.fn();
+  (globalThis as Record<string, unknown>).__mockChatCompletion = mockCreate;
+  function MockOpenAI(this: unknown) {
+    return {
       chat: {
         completions: {
-          create: mockChatCompletion,
+          create: mockCreate,
         },
       },
-    })),
+    };
+  }
+  MockOpenAI.prototype = {};
+  return {
+    __esModule: true,
+    default: MockOpenAI,
   };
 });
-
-// Expose mock so test files can configure it
-vi.stubGlobal("__mockChatCompletion", mockChatCompletion);
 
 // ---------------------------------------------------------------------------
 // Mock next-auth
