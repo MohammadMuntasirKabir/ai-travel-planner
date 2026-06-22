@@ -1,6 +1,20 @@
+interface GeocodeAddressComponent {
+  long_name: string;
+  short_name: string;
+  types: string[];
+}
+
 interface GeocodeResult {
   country: string;
   formattedAddress: string;
+}
+
+interface GeocodeResponse {
+  results: Array<{
+    formatted_address: string;
+    address_components: GeocodeAddressComponent[];
+  }>;
+  status: string;
 }
 
 export async function getCountryFromCoordinates(
@@ -12,11 +26,11 @@ export async function getCountryFromCoordinates(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
   );
 
-  const data = await response.json();
+  const data: GeocodeResponse = await response.json();
 
   const result = data.results[0];
-  const countryComponent = result.address_components.find((component: any) =>
-    component.types.includes("country")
+  const countryComponent = result.address_components.find(
+    (component: GeocodeAddressComponent) => component.types.includes("country")
   );
 
   return {

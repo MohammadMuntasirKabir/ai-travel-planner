@@ -5,9 +5,10 @@ import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
 import { prisma } from "@/lib/prisma";
+import { withRateLimit } from "@/lib/rate-limit-middleware";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+async function handler(req: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -17,8 +18,10 @@ export async function POST(req: NextRequest) {
     const { locationId, tripTitle } = await req.json();
 
     const location = await prisma.location.findFirst({
-      where: { id: locationId },
-      include: { trip: { where: { userId: session.user.id } } },
+      where: {
+        id: locationId,
+        trip: { is: { userId: session.user.id } },
+      },
     });
 
     if (!location) {
@@ -51,3 +54,5 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export const POST = withRateLimit(handler);

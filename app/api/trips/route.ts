@@ -1,7 +1,13 @@
 import { auth } from "@/auth";
 import { getCountryFromCoordinates } from "@/lib/actions/geocode";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import {
+  assertDateString,
+  assertOptionalString,
+  assertString,
+  ValidationError,
+} from "@/lib/validation";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -52,6 +58,59 @@ export async function GET() {
     return NextResponse.json(transformedLocations);
   } catch (err) {
     console.error("Trips API error:", err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return new NextResponse("Not authenticated", { status: 401 });
+    }
+
+    const body = await req.json();
+
+    // Validate inputs
+    const title = assertString(body.title, "title", { min: 1, max: 200 });
+    const description = assertString(body.description, "description", {
+      min: 1,
+      max: 5000,
+    });
+    const startDate = assertDateString(body.startDate, "startDate");
+    const endDate = assertDateString(body.endDate, "endDate");
+    const imageUrl = assertOptionalString(body.imageUrl, "imageUrl", {
+      max: 2048,
+    });
+
+    // Business rule: endDate must be >= startDate
+    if (new Date(endDate) < new Date(startDate)) {
+      return NextResponse.json(
+        { error: "Validation failed", details: ["endDate must be on or after startDate"] },
+        { status: 400 }
+      );
+    }
+
+    const trip = await prisma.trip.create({
+      data: {
+        title,
+        description,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        imageUrl,
+        userId: session.user.id,
+      },
+    });
+
+    return NextResponse.json(trip, { status: 201 });
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      return NextResponse.json(
+        { error: err.message, details: err.details },
+        { status: err.status }
+      );
+    }
+    console.error("Trips POST error:", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

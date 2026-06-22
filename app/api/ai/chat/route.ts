@@ -4,9 +4,10 @@
 import { auth } from "@/auth";
 import { streamChatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
+import { withRateLimit } from "@/lib/rate-limit-middleware";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+async function handler(req: NextRequest) {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -54,3 +55,5 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export const POST = withRateLimit(handler);
