@@ -20,8 +20,6 @@ export default async function TripDetail({
     include: { locations: true },
   });
 
-  console.log(trip);
-
   if (!trip) {
     return <div> Trip not found.</div>;
   }

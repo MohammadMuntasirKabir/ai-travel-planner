@@ -30,20 +30,28 @@ export async function GET() {
 
     const transformedLocations = await Promise.all(
       locations.map(async (loc) => {
-        const geocodeResult = await getCountryFromCoordinates(loc.lat, loc.lng);
-
-        return {
-          name: `${loc.trip.title} - ${geocodeResult.formattedAddress}`,
-          lat: loc.lat,
-          lng: loc.lng,
-          country: geocodeResult.country,
-        };
+        try {
+          const geocodeResult = await getCountryFromCoordinates(loc.lat, loc.lng);
+          return {
+            name: `${loc.trip.title} - ${geocodeResult.formattedAddress}`,
+            lat: loc.lat,
+            lng: loc.lng,
+            country: geocodeResult.country,
+          };
+        } catch {
+          return {
+            name: `${loc.trip.title} - ${loc.locationTitle}`,
+            lat: loc.lat,
+            lng: loc.lng,
+            country: "Unknown",
+          };
+        }
       })
     );
 
     return NextResponse.json(transformedLocations);
   } catch (err) {
-    console.log(err);
+    console.error("Trips API error:", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

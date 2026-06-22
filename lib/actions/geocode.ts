@@ -20,7 +20,7 @@ export async function getCountryFromCoordinates(
   );
 
   return {
-    country: countryComponent.long_name || "Unknown",
+    country: countryComponent?.long_name || "Unknown",
     formattedAddress: result.formatted_address,
   };
 }
