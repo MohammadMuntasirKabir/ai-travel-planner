@@ -1,0 +1,6 @@
+# no-mistakes pipeline configuration for AI Travel Planner (Next.js + TypeScript)
+
+commands:
+  test: "npx vitest run --reporter=verbose 2>&1 | tail -30"
+  lint: "npx next lint 2>&1"
+  format: "npx prettier --check ."
