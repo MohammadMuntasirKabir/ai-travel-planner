@@ -3,10 +3,18 @@
 
 import OpenAI from "openai";
 
-const client = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY!,
-});
+// Lazily instantiate the client so that build-time page-data collection
+// (next build) does not require credentials to be present in the environment.
+let client: OpenAI | null = null;
+function getClient(): OpenAI {
+  if (!client) {
+    client = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: process.env.OPENROUTER_API_KEY!,
+    });
+  }
+  return client;
+}
 
 export const MODEL =
   process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free";
@@ -67,7 +75,7 @@ export async function chatCompletion(
 ): Promise<string> {
   const response = await withRetry(
     () =>
-      client.chat.completions.create({
+      getClient().chat.completions.create({
         model: MODEL,
         messages,
         max_tokens: options?.maxTokens ?? 2048,
@@ -85,7 +93,7 @@ export async function streamChatCompletion(
 ): Promise<ReadableStream<string>> {
   const stream = await withRetry(
     () =>
-      client.chat.completions.create({
+      getClient().chat.completions.create({
         model: MODEL,
         messages,
         max_tokens: options?.maxTokens ?? 2048,
