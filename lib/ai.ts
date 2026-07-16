@@ -9,7 +9,7 @@ const client = new OpenAI({
 });
 
 export const MODEL =
-  process.env.OPENROUTER_MODEL || "google/gemini-2.5-flash-preview";
+  process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free";
 
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
