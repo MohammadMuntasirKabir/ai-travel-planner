@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "./setup";
 import { createMockNextRequest } from "./setup";
 
@@ -11,7 +11,12 @@ vi.mock("@/auth", () => ({ auth: mockAuth }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trip: { findFirst: mockFindFirst, update: mockUpdate },
-    location: { findFirst: vi.fn(), create: vi.fn(), update: vi.fn(), count: vi.fn() },
+    location: {
+      findFirst: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      count: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
 }));
@@ -20,7 +25,12 @@ vi.mock("@/lib/ai", () => ({ chatCompletion: mockChat }));
 import { POST } from "@/app/api/ai/summarize/route";
 
 describe("POST /api/ai/summarize", () => {
-  beforeEach(() => { mockAuth.mockReset(); mockFindFirst.mockReset(); mockUpdate.mockReset(); mockChat.mockReset(); });
+  beforeEach(() => {
+    mockAuth.mockReset();
+    mockFindFirst.mockReset();
+    mockUpdate.mockReset();
+    mockChat.mockReset();
+  });
 
   it("should return 401 when not authenticated", async () => {
     mockAuth.mockResolvedValueOnce(null);
@@ -36,12 +46,19 @@ describe("POST /api/ai/summarize", () => {
   });
 
   it("should generate and return summary, tips, packing, budget", async () => {
-    const fakeTrip = { id: "trip-123", title: "Bali Retreat", description: "Beach vacation",
-      startDate: new Date("2026-07-01"), endDate: new Date("2026-07-10"),
-      locations: [{ id: "loc-1", locationTitle: "Ubud", order: 0 }] };
+    const fakeTrip = {
+      id: "trip-123",
+      title: "Bali Retreat",
+      description: "Beach vacation",
+      startDate: new Date("2026-07-01"),
+      endDate: new Date("2026-07-10"),
+      locations: [{ id: "loc-1", locationTitle: "Ubud", order: 0 }],
+    };
     const fakeAI = JSON.stringify({
-      summary: "A wonderful retreat in Bali...", tips: ["Bring sunscreen", "Book early"],
-      packingSuggestions: ["Swimsuit", "Sunscreen", "Hat"], budgetEstimate: "$2000-3000 for 10 days",
+      summary: "A wonderful retreat in Bali...",
+      tips: ["Bring sunscreen", "Book early"],
+      packingSuggestions: ["Swimsuit", "Sunscreen", "Hat"],
+      budgetEstimate: "$2000-3000 for 10 days",
     });
     mockAuth.mockResolvedValueOnce({ user: { id: "user-1" } });
     mockFindFirst.mockResolvedValueOnce(fakeTrip);
@@ -57,20 +74,40 @@ describe("POST /api/ai/summarize", () => {
   });
 
   it("should save summary, packing list, and budget to database", async () => {
-    const fakeTrip = { id: "trip-123", title: "Test", description: "Desc",
-      startDate: new Date("2026-01-01"), endDate: new Date("2026-01-05"), locations: [] };
-    const fakeAI = JSON.stringify({ summary: "Great trip", tips: ["Tip 1"], packingSuggestions: ["Item 1"], budgetEstimate: "$500" });
+    const fakeTrip = {
+      id: "trip-123",
+      title: "Test",
+      description: "Desc",
+      startDate: new Date("2026-01-01"),
+      endDate: new Date("2026-01-05"),
+      locations: [],
+    };
+    const fakeAI = JSON.stringify({
+      summary: "Great trip",
+      tips: ["Tip 1"],
+      packingSuggestions: ["Item 1"],
+      budgetEstimate: "$500",
+    });
     mockAuth.mockResolvedValueOnce({ user: { id: "user-1" } });
     mockFindFirst.mockResolvedValueOnce(fakeTrip);
     mockChat.mockResolvedValueOnce(fakeAI);
     mockUpdate.mockResolvedValueOnce({});
     await POST(createMockNextRequest({ tripId: "trip-123" }));
-    expect(mockUpdate).toHaveBeenCalledWith({ where: { id: "trip-123" }, data: expect.objectContaining({ aiSummary: "Great trip" }) });
+    expect(mockUpdate).toHaveBeenCalledWith({
+      where: { id: "trip-123" },
+      data: expect.objectContaining({ aiSummary: "Great trip" }),
+    });
   });
 
   it("should return 500 when AI response has no JSON", async () => {
-    const fakeTrip = { id: "trip-123", title: "Test", description: "Desc",
-      startDate: new Date("2026-01-01"), endDate: new Date("2026-01-05"), locations: [] };
+    const fakeTrip = {
+      id: "trip-123",
+      title: "Test",
+      description: "Desc",
+      startDate: new Date("2026-01-01"),
+      endDate: new Date("2026-01-05"),
+      locations: [],
+    };
     mockAuth.mockResolvedValueOnce({ user: { id: "user-1" } });
     mockFindFirst.mockResolvedValueOnce(fakeTrip);
     mockChat.mockResolvedValueOnce("I cannot summarize this trip.");

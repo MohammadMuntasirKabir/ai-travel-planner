@@ -1,14 +1,14 @@
-import { Location } from "@/app/generated/prisma";
-import { reorderItinerary } from "@/lib/actions/reorder-itinerary";
-import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
+import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  verticalListSortingStrategy,
   useSortable,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useId, useState } from "react";
+import type { Location } from "@/app/generated/prisma";
+import { reorderItinerary } from "@/lib/actions/reorder-itinerary";
 import DeleteLocationButton from "./delete-location-button";
 
 interface SortableItineraryProps {
@@ -16,7 +16,7 @@ interface SortableItineraryProps {
   tripId: string;
 }
 
-function SortableItem({ item, tripId }: { item: Location; tripId: string }) {
+function SortableItem({ item }: { item: Location }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
 
@@ -37,7 +37,7 @@ function SortableItem({ item, tripId }: { item: Location; tripId: string }) {
       </div>
       <div className="flex items-center gap-3">
         <div className="text-sm text-gray-600"> Day {item.order}</div>
-        <DeleteLocationButton locationId={item.id} tripId={tripId} />
+        <DeleteLocationButton locationId={item.id} />
       </div>
     </div>
   );
@@ -55,19 +55,19 @@ export default function SortableItinerary({
 
     if (active.id !== over?.id) {
       const oldIndex = localLocation.findIndex((item) => item.id === active.id);
-      const newIndex = localLocation.findIndex((item) => item.id === over!.id);
+      const newIndex = localLocation.findIndex((item) => item.id === over?.id);
 
       const newLocationsOrder = arrayMove(
         localLocation,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((item, index) => ({ ...item, order: index }));
 
       setLocalLocation(newLocationsOrder);
 
       await reorderItinerary(
         tripId,
-        newLocationsOrder.map((item) => item.id)
+        newLocationsOrder.map((item) => item.id),
       );
     }
   };
@@ -84,7 +84,7 @@ export default function SortableItinerary({
       >
         <div className="space-y-4">
           {localLocation.map((item, key) => (
-            <SortableItem key={key} item={item} tripId={tripId} />
+            <SortableItem key={key} item={item} />
           ))}
         </div>
       </SortableContext>

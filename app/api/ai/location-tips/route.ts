@@ -1,13 +1,13 @@
 // POST /api/ai/location-tips
 // Generates AI tips for a specific location
 
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
 import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
-import { NextRequest, NextResponse } from "next/server";
 
 async function handler(req: NextRequest) {
   try {
@@ -31,10 +31,17 @@ async function handler(req: NextRequest) {
 
     const prompt = PROMPTS.locationTips(location.locationTitle, tripTitle);
 
-    const result = await chatCompletion([
-      { role: "system", content: "You are a local travel guide. Always respond with valid JSON only." },
-      { role: "user", content: prompt },
-    ], { maxTokens: 1536 });
+    const result = await chatCompletion(
+      [
+        {
+          role: "system",
+          content:
+            "You are a local travel guide. Always respond with valid JSON only.",
+        },
+        { role: "user", content: prompt },
+      ],
+      { maxTokens: 1536 },
+    );
 
     let parsed: unknown;
     try {

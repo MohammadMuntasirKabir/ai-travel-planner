@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { extractJson } from "@/lib/json";
 
 describe("lib/json.ts extractJson", () => {
@@ -21,12 +21,12 @@ describe("lib/json.ts extractJson", () => {
   });
 
   it("extracts JSON embedded in prose", () => {
-    const raw = "Sure! Here is your plan:\n{\"trip\":true}\nHope that helps.";
+    const raw = 'Sure! Here is your plan:\n{"trip":true}\nHope that helps.';
     expect(extractJson(raw)).toEqual({ trip: true });
   });
 
   it("extracts an array embedded in prose", () => {
-    const raw = "Here you go: [\"a\", \"b\"] done.";
+    const raw = 'Here you go: ["a", "b"] done.';
     expect(extractJson(raw)).toEqual(["a", "b"]);
   });
 

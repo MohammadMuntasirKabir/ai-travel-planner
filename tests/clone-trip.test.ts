@@ -1,20 +1,30 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "./setup";
 
 const mockAuth = vi.hoisted(() => vi.fn());
 const mockTripFindFirst = vi.hoisted(() => vi.fn());
 const mockTripCreate = vi.hoisted(() => vi.fn());
-const mockRedirect = vi.hoisted(() => vi.fn());
+const _mockRedirect = vi.hoisted(() => vi.fn());
 
 vi.mock("@/auth", () => ({ auth: mockAuth }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trip: { findFirst: mockTripFindFirst, create: mockTripCreate },
-    location: { findFirst: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), count: vi.fn() },
+    location: {
+      findFirst: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      count: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
 }));
-vi.mock("next/navigation", () => ({ redirect: (...args: unknown[]) => { throw new Error("redirect"); } }));
+vi.mock("next/navigation", () => ({
+  redirect: (..._args: unknown[]) => {
+    throw new Error("redirect");
+  },
+}));
 
 import { cloneTrip } from "@/lib/actions/clone-trip";
 
@@ -50,7 +60,13 @@ describe("cloneTrip server action", () => {
       aiPackingList: '["hat"]',
       aiBudgetEstimate: '"$1000"',
       locations: [
-        { locationTitle: "Tokyo", lat: 35.6, lng: 139.6, order: 0, aiTips: null },
+        {
+          locationTitle: "Tokyo",
+          lat: 35.6,
+          lng: 139.6,
+          order: 0,
+          aiTips: null,
+        },
       ],
     });
     mockTripCreate.mockResolvedValueOnce({ id: "trip-new" });

@@ -1,12 +1,12 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "../prisma";
-import { redirect } from "next/navigation";
 
 export async function createTrip(formData: FormData) {
   const session = await auth();
-  if (!session || !session.user?.id) {
+  if (!session?.user?.id) {
     throw new Error("Not authenticated.");
   }
 

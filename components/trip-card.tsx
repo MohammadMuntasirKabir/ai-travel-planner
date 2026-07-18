@@ -1,6 +1,6 @@
-import { Location, Trip } from "@/app/generated/prisma";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import type { Location, Trip } from "@/app/generated/prisma";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface TripWithLocations extends Trip {
   locations: Location[];

@@ -1,11 +1,11 @@
 // POST /api/ai/chat
 // Streaming chat endpoint for the AI travel assistant
 
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { streamChatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
-import { NextRequest, NextResponse } from "next/server";
 
 async function handler(req: NextRequest) {
   try {
@@ -25,7 +25,9 @@ async function handler(req: NextRequest) {
       ...messages,
     ];
 
-    const stream = await streamChatCompletion(chatMessages, { maxTokens: 2048 });
+    const stream = await streamChatCompletion(chatMessages, {
+      maxTokens: 2048,
+    });
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({

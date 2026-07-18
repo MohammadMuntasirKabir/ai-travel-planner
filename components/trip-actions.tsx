@@ -1,10 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
+import { Copy, Printer, Share2, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { cloneTrip } from "@/lib/actions/clone-trip";
+import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { Share2, Printer, Copy, Trash2 } from "lucide-react";
+import { cloneTrip } from "@/lib/actions/clone-trip";
 
 interface TripActionsProps {
   tripId: string;
@@ -27,7 +27,9 @@ export default function TripActions({ tripId }: TripActionsProps) {
   };
 
   const handleDelete = () => {
-    if (!confirm("Delete this trip and all its locations? This cannot be undone.")) {
+    if (
+      !confirm("Delete this trip and all its locations? This cannot be undone.")
+    ) {
       return;
     }
     startDelete(async () => {
@@ -68,7 +70,8 @@ export default function TripActions({ tripId }: TripActionsProps) {
         disabled={isDeleting}
         onClick={handleDelete}
       >
-        <Trash2 className="mr-2 h-4 w-4" /> {isDeleting ? "Deleting…" : "Delete"}
+        <Trash2 className="mr-2 h-4 w-4" />{" "}
+        {isDeleting ? "Deleting…" : "Delete"}
       </Button>
     </div>
   );

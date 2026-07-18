@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Print Trip — AI Travel Planner",
@@ -33,7 +33,7 @@ export default async function PrintTripPage({
   let itinerary: { itinerary?: unknown[]; highlights?: string[] } | null = null;
   let budget: unknown = null;
   let packing: unknown = null;
-  let summary: string | null = trip.aiSummary;
+  const summary: string | null = trip.aiSummary;
   try {
     itinerary = trip.aiItinerary ? JSON.parse(trip.aiItinerary) : null;
     budget = trip.aiBudgetEstimate ? JSON.parse(trip.aiBudgetEstimate) : null;
@@ -54,6 +54,7 @@ export default async function PrintTripPage({
 
       <div className="no-print mb-6 flex gap-3 print:hidden">
         <button
+          type="button"
           onClick={() => window.print()}
           className="bg-black text-white px-4 py-2 rounded-md"
         >
@@ -76,7 +77,12 @@ export default async function PrintTripPage({
 
       {trip.imageUrl && (
         <div className="my-4 w-full h-56 overflow-hidden rounded-lg relative">
-          <Image src={trip.imageUrl} alt={trip.title} fill className="object-cover" />
+          <Image
+            src={trip.imageUrl}
+            alt={trip.title}
+            fill
+            className="object-cover"
+          />
         </div>
       )}
 
@@ -93,16 +99,18 @@ export default async function PrintTripPage({
         <section className="mt-6">
           <h2 className="text-xl font-bold border-b pb-1">Itinerary</h2>
           <div className="mt-2 space-y-3">
-            {(itinerary.itinerary as Array<{
-              day?: number;
-              title?: string;
-              activities?: Array<{
-                time?: string;
-                description?: string;
-                location?: string;
-                tips?: string;
-              }>;
-            }>).map((d, i) => (
+            {(
+              itinerary.itinerary as Array<{
+                day?: number;
+                title?: string;
+                activities?: Array<{
+                  time?: string;
+                  description?: string;
+                  location?: string;
+                  tips?: string;
+                }>;
+              }>
+            ).map((d, i) => (
               <div key={i}>
                 <h3 className="font-semibold">
                   Day {d.day ?? i + 1}

@@ -15,14 +15,16 @@ export class ValidationError extends Error {
 export function assertString(
   value: unknown,
   field: string,
-  { min = 1, max = 10_000 }: { min?: number; max?: number } = {}
+  { min = 1, max = 10_000 }: { min?: number; max?: number } = {},
 ): string {
   if (typeof value !== "string") {
     throw new ValidationError([`${field} must be a string`]);
   }
   const trimmed = value.trim();
   if (trimmed.length < min) {
-    throw new ValidationError([`${field} must be at least ${min} character(s)`]);
+    throw new ValidationError([
+      `${field} must be at least ${min} character(s)`,
+    ]);
   }
   if (trimmed.length > max) {
     throw new ValidationError([`${field} must be at most ${max} characters`]);
@@ -33,7 +35,7 @@ export function assertString(
 export function assertOptionalString(
   value: unknown,
   field: string,
-  { max = 10_000 }: { max?: number } = {}
+  { max = 10_000 }: { max?: number } = {},
 ): string | undefined {
   if (value === undefined || value === null) return undefined;
   return assertString(value, field, { min: 0, max });
@@ -42,8 +44,10 @@ export function assertOptionalString(
 export function assertDateString(value: unknown, field: string): string {
   const str = assertString(value, field);
   const date = new Date(str);
-  if (isNaN(date.getTime())) {
-    throw new ValidationError([`${field} must be a valid ISO 8601 date string`]);
+  if (Number.isNaN(date.getTime())) {
+    throw new ValidationError([
+      `${field} must be a valid ISO 8601 date string`,
+    ]);
   }
   return str;
 }

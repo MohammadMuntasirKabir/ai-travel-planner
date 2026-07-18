@@ -1,13 +1,13 @@
 // POST /api/ai/generate-itinerary
 // Generates a full day-by-day itinerary for a trip using OpenRouter AI
 
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
 import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
-import { NextRequest, NextResponse } from "next/server";
 
 async function handler(req: NextRequest) {
   try {
@@ -33,13 +33,20 @@ async function handler(req: NextRequest) {
       trip.description,
       trip.startDate.toISOString().split("T")[0],
       trip.endDate.toISOString().split("T")[0],
-      locationNames
+      locationNames,
     );
 
-    const result = await chatCompletion([
-      { role: "system", content: "You are an expert travel planner. Always respond with valid JSON only." },
-      { role: "user", content: prompt },
-    ], { maxTokens: 4096 });
+    const result = await chatCompletion(
+      [
+        {
+          role: "system",
+          content:
+            "You are an expert travel planner. Always respond with valid JSON only.",
+        },
+        { role: "user", content: prompt },
+      ],
+      { maxTokens: 4096 },
+    );
 
     // Extract JSON from response
     let parsed: unknown;

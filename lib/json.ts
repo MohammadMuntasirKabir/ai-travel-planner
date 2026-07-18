@@ -19,7 +19,9 @@ export function extractJson(raw: string): unknown {
   if (direct !== undefined) return direct;
 
   // Strip ```json ... ``` or ``` ... ``` fences.
-  const fenced = trimmed.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
+  const fenced = trimmed
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/```\s*$/i, "");
   const fencedParsed = tryParse(fenced.trim());
   if (fencedParsed !== undefined) return fencedParsed;
 
@@ -43,23 +45,27 @@ function tryParse(text: string): unknown | undefined {
 
 // Extract the first substring that starts at the first `open` and ends at its
 // matching `close`, ignoring brackets inside strings.
-function extractBalanced(text: string, open: string, close: string): unknown | undefined {
+function extractBalanced(
+  text: string,
+  open: string,
+  close: string,
+): unknown | undefined {
   const start = text.indexOf(open);
   if (start === -1) return undefined;
 
   let depth = 0;
   let inString = false;
-  let escape = false;
+  let isEscaped = false;
 
   for (let i = start; i < text.length; i++) {
     const char = text[i];
 
-    if (escape) {
-      escape = false;
+    if (isEscaped) {
+      isEscaped = false;
       continue;
     }
     if (char === "\\") {
-      escape = true;
+      isEscaped = true;
       continue;
     }
     if (char === '"') {

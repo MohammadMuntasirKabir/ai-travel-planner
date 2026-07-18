@@ -1,8 +1,8 @@
 "use client";
 
 import { useTransition } from "react";
-import { Button } from "./ui/button";
 import { addLocation } from "@/lib/actions/add-location";
+import { Button } from "./ui/button";
 
 export default function NewLocationClient({ tripId }: { tripId: string }) {
   const [isPending, startTransation] = useTransition();
@@ -25,11 +25,15 @@ export default function NewLocationClient({ tripId }: { tripId: string }) {
             }}
           >
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 {" "}
                 Address
               </label>
               <input
+                id="address"
                 name="address"
                 type="text"
                 required

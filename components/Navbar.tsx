@@ -1,9 +1,9 @@
 "use client";
 
-import { login, logout } from "@/lib/auth-actions";
-import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import type { Session } from "next-auth";
+import { login, logout } from "@/lib/auth-actions";
 
 export default function Navbar({ session }: { session: Session | null }) {
   return (
@@ -34,6 +34,7 @@ export default function Navbar({ session }: { session: Session | null }) {
               </Link>
 
               <button
+                type="button"
                 className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
                 onClick={logout}
               >
@@ -42,11 +43,13 @@ export default function Navbar({ session }: { session: Session | null }) {
             </>
           ) : (
             <button
+              type="button"
               className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
               onClick={login}
             >
               Sign In
               <svg
+                aria-hidden="true"
                 className="w-6 h-6 ml-2"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

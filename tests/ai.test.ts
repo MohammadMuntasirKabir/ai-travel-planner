@@ -1,9 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "./setup";
 
 describe("lib/ai.ts", () => {
-  let chatCompletion: (messages: import("@/lib/ai").ChatMessage[], options?: { maxTokens?: number; temperature?: number }) => Promise<string>;
-  let streamChatCompletion: (messages: import("@/lib/ai").ChatMessage[], options?: { maxTokens?: number; temperature?: number }) => Promise<ReadableStream<string>>;
+  let chatCompletion: (
+    messages: import("@/lib/ai").ChatMessage[],
+    options?: { maxTokens?: number; temperature?: number },
+  ) => Promise<string>;
+  let streamChatCompletion: (
+    messages: import("@/lib/ai").ChatMessage[],
+    options?: { maxTokens?: number; temperature?: number },
+  ) => Promise<ReadableStream<string>>;
   let MODEL: string;
 
   beforeEach(async () => {
@@ -16,7 +22,9 @@ describe("lib/ai.ts", () => {
 
   describe("chatCompletion", () => {
     it("should call OpenAI with correct default parameters", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
       mockFn.mockResolvedValueOnce({
         choices: [{ message: { content: "Hello from AI" } }],
       });
@@ -36,31 +44,35 @@ describe("lib/ai.ts", () => {
           ],
           max_tokens: 2048,
           temperature: 0.7,
-        })
+        }),
       );
     });
 
     it("should use custom maxTokens and temperature", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
       mockFn.mockResolvedValueOnce({
         choices: [{ message: { content: "Custom" } }],
       });
 
-      await chatCompletion(
-        [{ role: "user", content: "Test" }],
-        { maxTokens: 4096, temperature: 0.3 }
-      );
+      await chatCompletion([{ role: "user", content: "Test" }], {
+        maxTokens: 4096,
+        temperature: 0.3,
+      });
 
       expect(mockFn).toHaveBeenCalledWith(
         expect.objectContaining({
           max_tokens: 4096,
           temperature: 0.3,
-        })
+        }),
       );
     });
 
     it("should return empty string when no content", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
       mockFn.mockResolvedValueOnce({
         choices: [{ message: { content: null } }],
       });
@@ -70,16 +82,20 @@ describe("lib/ai.ts", () => {
     });
 
     it("should propagate API errors", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
       mockFn.mockRejectedValueOnce(new Error("API rate limit"));
 
       await expect(
-        chatCompletion([{ role: "user", content: "Test" }])
+        chatCompletion([{ role: "user", content: "Test" }]),
       ).rejects.toThrow("API rate limit");
     });
 
     it("should use the MODEL constant", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
       mockFn.mockResolvedValueOnce({
         choices: [{ message: { content: "ok" } }],
       });
@@ -89,14 +105,16 @@ describe("lib/ai.ts", () => {
       expect(mockFn).toHaveBeenCalledWith(
         expect.objectContaining({
           model: MODEL,
-        })
+        }),
       );
     });
   });
 
   describe("streamChatCompletion", () => {
     it("should return a ReadableStream with chunked content", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
 
       const chunks = [
         { choices: [{ delta: { content: "Hello" } }] },
@@ -126,7 +144,7 @@ describe("lib/ai.ts", () => {
       ]);
 
       const reader = stream.getReader();
-      const decoder = new TextDecoder();
+      const _decoder = new TextDecoder();
       let fullText = "";
 
       while (true) {
@@ -137,12 +155,14 @@ describe("lib/ai.ts", () => {
 
       expect(fullText).toBe("Hello world!");
       expect(mockFn).toHaveBeenCalledWith(
-        expect.objectContaining({ stream: true })
+        expect.objectContaining({ stream: true }),
       );
     });
 
     it("should handle stream errors", async () => {
-      const mockFn = (globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>).__mockChatCompletion;
+      const mockFn = (
+        globalThis as unknown as Record<string, ReturnType<typeof vi.fn>>
+      ).__mockChatCompletion;
 
       const asyncIter = {
         [Symbol.asyncIterator]() {

@@ -16,8 +16,7 @@ function getClient(): OpenAI {
   return client;
 }
 
-export const MODEL =
-  process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free";
+export const MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-oss-20b:free";
 
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
@@ -32,8 +31,11 @@ function isRetryable(err: unknown): boolean {
   try {
     if (OpenAI.APIError && err instanceof OpenAI.APIError) {
       return (
-        err.status === 429 || err.status === 500 || err.status === 502 ||
-        err.status === 503 || err.status === 504
+        err.status === 429 ||
+        err.status === 500 ||
+        err.status === 502 ||
+        err.status === 503 ||
+        err.status === 504
       );
     }
   } catch {
@@ -42,8 +44,10 @@ function isRetryable(err: unknown): boolean {
   if (err instanceof Error) {
     const msg = err.message.toLowerCase();
     return (
-      msg.includes("econnreset") || msg.includes("etimedout") ||
-      msg.includes("socket hang up") || msg.includes("network error")
+      msg.includes("econnreset") ||
+      msg.includes("etimedout") ||
+      msg.includes("socket hang up") ||
+      msg.includes("network error")
     );
   }
   return false;
@@ -59,9 +63,9 @@ async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
       if (!isRetryable(err) || attempt === MAX_RETRIES) {
         throw err;
       }
-      const delay = BASE_RETRY_DELAY_MS * Math.pow(2, attempt - 1);
+      const delay = BASE_RETRY_DELAY_MS * 2 ** (attempt - 1);
       console.warn(
-        `${label}: attempt ${attempt}/${MAX_RETRIES} failed (${err}), retrying in ${delay}ms`
+        `${label}: attempt ${attempt}/${MAX_RETRIES} failed (${err}), retrying in ${delay}ms`,
       );
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
@@ -71,7 +75,7 @@ async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
 
 export async function chatCompletion(
   messages: ChatMessage[],
-  options?: { maxTokens?: number; temperature?: number }
+  options?: { maxTokens?: number; temperature?: number },
 ): Promise<string> {
   const response = await withRetry(
     () =>
@@ -81,7 +85,7 @@ export async function chatCompletion(
         max_tokens: options?.maxTokens ?? 2048,
         temperature: options?.temperature ?? 0.7,
       }),
-    "chatCompletion"
+    "chatCompletion",
   );
 
   return response.choices[0]?.message?.content ?? "";
@@ -89,7 +93,7 @@ export async function chatCompletion(
 
 export async function streamChatCompletion(
   messages: ChatMessage[],
-  options?: { maxTokens?: number; temperature?: number }
+  options?: { maxTokens?: number; temperature?: number },
 ): Promise<ReadableStream<string>> {
   const stream = await withRetry(
     () =>
@@ -100,7 +104,7 @@ export async function streamChatCompletion(
         temperature: options?.temperature ?? 0.7,
         stream: true,
       }),
-    "streamChatCompletion"
+    "streamChatCompletion",
   );
 
   return new ReadableStream<string>({

@@ -1,13 +1,13 @@
 // POST /api/ai/suggest-locations
 // Suggests new locations for a trip using OpenRouter AI
 
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
 import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
-import { NextRequest, NextResponse } from "next/server";
 
 async function handler(req: NextRequest) {
   try {
@@ -27,19 +27,28 @@ async function handler(req: NextRequest) {
       return new NextResponse("Trip not found", { status: 404 });
     }
 
-    const existingLocations = trip.locations.map((l) => l.locationTitle).join(", ");
+    const existingLocations = trip.locations
+      .map((l) => l.locationTitle)
+      .join(", ");
     const prompt = PROMPTS.suggestLocations(
       trip.title,
       trip.description,
       trip.startDate.toISOString().split("T")[0],
       trip.endDate.toISOString().split("T")[0],
-      existingLocations
+      existingLocations,
     );
 
-    const result = await chatCompletion([
-      { role: "system", content: "You are a travel expert. Always respond with valid JSON only." },
-      { role: "user", content: prompt },
-    ], { maxTokens: 2048 });
+    const result = await chatCompletion(
+      [
+        {
+          role: "system",
+          content:
+            "You are a travel expert. Always respond with valid JSON only.",
+        },
+        { role: "user", content: prompt },
+      ],
+      { maxTokens: 2048 },
+    );
 
     let parsed: unknown;
     try {

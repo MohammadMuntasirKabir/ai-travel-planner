@@ -1,3 +1,4 @@
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getCountryFromCoordinates } from "@/lib/actions/geocode";
 import { prisma } from "@/lib/prisma";
@@ -7,7 +8,6 @@ import {
   assertString,
   ValidationError,
 } from "@/lib/validation";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -37,7 +37,10 @@ export async function GET() {
     const transformedLocations = await Promise.all(
       locations.map(async (loc) => {
         try {
-          const geocodeResult = await getCountryFromCoordinates(loc.lat, loc.lng);
+          const geocodeResult = await getCountryFromCoordinates(
+            loc.lat,
+            loc.lng,
+          );
           return {
             name: `${loc.trip.title} - ${geocodeResult.formattedAddress}`,
             lat: loc.lat,
@@ -52,7 +55,7 @@ export async function GET() {
             country: "Unknown",
           };
         }
-      })
+      }),
     );
 
     return NextResponse.json(transformedLocations);
@@ -90,7 +93,7 @@ export async function DELETE(req: NextRequest) {
     if (!tripId || typeof tripId !== "string") {
       return NextResponse.json(
         { error: "Validation failed", details: ["id is required"] },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -134,8 +137,11 @@ export async function POST(req: NextRequest) {
     // Business rule: endDate must be >= startDate
     if (new Date(endDate) < new Date(startDate)) {
       return NextResponse.json(
-        { error: "Validation failed", details: ["endDate must be on or after startDate"] },
-        { status: 400 }
+        {
+          error: "Validation failed",
+          details: ["endDate must be on or after startDate"],
+        },
+        { status: 400 },
       );
     }
 
@@ -155,7 +161,7 @@ export async function POST(req: NextRequest) {
     if (err instanceof ValidationError) {
       return NextResponse.json(
         { error: err.message, details: err.details },
-        { status: err.status }
+        { status: err.status },
       );
     }
     console.error("Trips POST error:", err);

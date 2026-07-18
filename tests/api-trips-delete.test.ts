@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "./setup";
 import { createMockNextRequest } from "./setup";
 
@@ -12,7 +12,13 @@ vi.mock("@/auth", () => ({ auth: mockAuth }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trip: { findFirst: mockTripFindFirst, delete: mockTripDelete },
-    location: { findFirst: mockLocFindFirst, delete: mockLocDelete, create: vi.fn(), update: vi.fn(), count: vi.fn() },
+    location: {
+      findFirst: mockLocFindFirst,
+      delete: mockLocDelete,
+      create: vi.fn(),
+      update: vi.fn(),
+      count: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
 }));

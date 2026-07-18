@@ -28,11 +28,11 @@ function getGoogleMapsKey(): string {
 
 export async function getCountryFromCoordinates(
   lat: number,
-  lng: number
+  lng: number,
 ): Promise<GeocodeResult> {
   const apiKey = getGoogleMapsKey();
   const response = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`,
   );
 
   const data: GeocodeResponse = await response.json();
@@ -43,7 +43,7 @@ export async function getCountryFromCoordinates(
   }
 
   const countryComponent = result.address_components.find(
-    (component: GeocodeAddressComponent) => component.types.includes("country")
+    (component: GeocodeAddressComponent) => component.types.includes("country"),
   );
 
   return {

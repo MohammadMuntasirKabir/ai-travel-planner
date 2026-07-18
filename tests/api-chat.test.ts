@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "./setup";
 import { createMockNextRequest } from "./setup";
 
@@ -11,11 +11,16 @@ vi.mock("@/lib/ai", () => ({ streamChatCompletion: mockStreamChat }));
 import { POST } from "@/app/api/ai/chat/route";
 
 describe("POST /api/ai/chat", () => {
-  beforeEach(() => { mockAuth.mockReset(); mockStreamChat.mockReset(); });
+  beforeEach(() => {
+    mockAuth.mockReset();
+    mockStreamChat.mockReset();
+  });
 
   it("should return 401 when not authenticated", async () => {
     mockAuth.mockResolvedValueOnce(null);
-    const res = await POST(createMockNextRequest({ messages: [{ role: "user", content: "Hello" }] }));
+    const res = await POST(
+      createMockNextRequest({ messages: [{ role: "user", content: "Hello" }] }),
+    );
     expect(res.status).toBe(401);
   });
 
@@ -35,7 +40,11 @@ describe("POST /api/ai/chat", () => {
 
     mockStreamChat.mockResolvedValueOnce(mockStream);
 
-    const res = await POST(createMockNextRequest({ messages: [{ role: "user", content: "Best places?" }] }));
+    const res = await POST(
+      createMockNextRequest({
+        messages: [{ role: "user", content: "Best places?" }],
+      }),
+    );
     expect(res.status).toBe(200);
     expect(res.headers.get("Content-Type")).toBe("text/plain; charset=utf-8");
     expect(res.headers.get("Transfer-Encoding")).toBe("chunked");
@@ -53,31 +62,59 @@ describe("POST /api/ai/chat", () => {
 
   it("should include trip context in system message when provided", async () => {
     mockAuth.mockResolvedValueOnce({ user: { id: "user-1" } });
-    mockStreamChat.mockResolvedValueOnce(new ReadableStream({ start(c) { c.close(); } }));
-    await POST(createMockNextRequest({
-      messages: [{ role: "user", content: "Suggest activities" }],
-      tripContext: { title: "Japan Trip", locations: ["Tokyo"] },
-    }));
+    mockStreamChat.mockResolvedValueOnce(
+      new ReadableStream({
+        start(c) {
+          c.close();
+        },
+      }),
+    );
+    await POST(
+      createMockNextRequest({
+        messages: [{ role: "user", content: "Suggest activities" }],
+        tripContext: { title: "Japan Trip", locations: ["Tokyo"] },
+      }),
+    );
     expect(mockStreamChat).toHaveBeenCalledWith(
-      expect.arrayContaining([expect.objectContaining({ role: "system", content: expect.stringContaining("Japan Trip") })]),
-      expect.anything()
+      expect.arrayContaining([
+        expect.objectContaining({
+          role: "system",
+          content: expect.stringContaining("Japan Trip"),
+        }),
+      ]),
+      expect.anything(),
     );
   });
 
   it("should use default system message without trip context", async () => {
     mockAuth.mockResolvedValueOnce({ user: { id: "user-1" } });
-    mockStreamChat.mockResolvedValueOnce(new ReadableStream({ start(c) { c.close(); } }));
-    await POST(createMockNextRequest({ messages: [{ role: "user", content: "Hello" }] }));
+    mockStreamChat.mockResolvedValueOnce(
+      new ReadableStream({
+        start(c) {
+          c.close();
+        },
+      }),
+    );
+    await POST(
+      createMockNextRequest({ messages: [{ role: "user", content: "Hello" }] }),
+    );
     expect(mockStreamChat).toHaveBeenCalledWith(
-      expect.arrayContaining([expect.objectContaining({ role: "system", content: expect.stringContaining("travel assistant") })]),
-      expect.anything()
+      expect.arrayContaining([
+        expect.objectContaining({
+          role: "system",
+          content: expect.stringContaining("travel assistant"),
+        }),
+      ]),
+      expect.anything(),
     );
   });
 
   it("should return 500 on streaming error", async () => {
     mockAuth.mockResolvedValueOnce({ user: { id: "user-1" } });
     mockStreamChat.mockRejectedValueOnce(new Error("API unavailable"));
-    const res = await POST(createMockNextRequest({ messages: [{ role: "user", content: "Hello" }] }));
+    const res = await POST(
+      createMockNextRequest({ messages: [{ role: "user", content: "Hello" }] }),
+    );
     expect(res.status).toBe(500);
   });
 });

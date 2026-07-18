@@ -1,8 +1,8 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import Globe, { GlobeMethods } from "react-globe.gl";
+import Globe, { type GlobeMethods } from "react-globe.gl";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface TransformedLocation {
   lat: number;
@@ -15,7 +15,7 @@ export default function GlobePage() {
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
   const [visitedCountries, setVisitedCountries] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [locations, setLocations] = useState<TransformedLocation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,7 @@ export default function GlobePage() {
         const data = await response.json();
         setLocations(data);
         const countries = new Set<string>(
-          data.map((loc: TransformedLocation) => loc.country)
+          data.map((loc: TransformedLocation) => loc.country),
         );
 
         setVisitedCountries(countries);

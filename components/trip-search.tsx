@@ -1,14 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { TripCard } from "./trip-card";
 import type { TripWithLocations } from "./trip-card";
+import { TripCard } from "./trip-card";
 
-export default function TripSearch({
-  trips,
-}: {
-  trips: TripWithLocations[];
-}) {
+export default function TripSearch({ trips }: { trips: TripWithLocations[] }) {
   const [query, setQuery] = useState("");
 
   const filtered = trips.filter((trip) => {

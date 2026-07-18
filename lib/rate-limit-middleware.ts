@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 
-function rateLimitMiddleware(
-  req: NextRequest
-): { response: NextResponse | null; remaining: number } {
+function rateLimitMiddleware(req: NextRequest): {
+  response: NextResponse | null;
+  remaining: number;
+} {
   const { allowed, remaining, retryAfterMs } = checkRateLimit(req);
 
   if (!allowed) {
@@ -25,7 +26,7 @@ function rateLimitMiddleware(
 }
 
 export function withRateLimit(
-  handler: (req: NextRequest) => Promise<NextResponse> | NextResponse
+  handler: (req: NextRequest) => Promise<NextResponse> | NextResponse,
 ) {
   return async (req: NextRequest): Promise<NextResponse> => {
     const result = rateLimitMiddleware(req);

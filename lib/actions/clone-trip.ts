@@ -1,8 +1,8 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 
 export async function cloneTrip(tripId: string) {
   const session = await auth();

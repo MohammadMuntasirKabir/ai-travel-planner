@@ -1,8 +1,8 @@
-import { prisma } from "@/lib/prisma";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Shared Trip — AI Travel Planner",
@@ -25,11 +25,11 @@ export default async function SharedTripPage({
   }
 
   let itinerary: unknown = null;
-  let budget: unknown = null;
+  let _budget: unknown = null;
   let packing: unknown = null;
   try {
     itinerary = trip.aiItinerary ? JSON.parse(trip.aiItinerary) : null;
-    budget = trip.aiBudgetEstimate ? JSON.parse(trip.aiBudgetEstimate) : null;
+    _budget = trip.aiBudgetEstimate ? JSON.parse(trip.aiBudgetEstimate) : null;
     packing = trip.aiPackingList ? JSON.parse(trip.aiPackingList) : null;
   } catch {
     // Ignore malformed stored AI JSON for the public view.
@@ -88,11 +88,14 @@ export default async function SharedTripPage({
         )}
 
         {Array.isArray((itinerary as { highlights?: unknown })?.highlights) &&
-          ((itinerary as { highlights?: unknown[] }).highlights?.length ?? 0) > 0 && (
+          ((itinerary as { highlights?: unknown[] }).highlights?.length ?? 0) >
+            0 && (
             <section className="bg-white p-6 shadow rounded-lg">
               <h2 className="text-2xl font-semibold mb-3">Highlights</h2>
               <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                {((itinerary as { highlights?: string[] }).highlights ?? []).map((h, i) => (
+                {(
+                  (itinerary as { highlights?: string[] }).highlights ?? []
+                ).map((h, i) => (
                   <li key={i}>{h}</li>
                 ))}
               </ul>
@@ -116,8 +119,8 @@ export default async function SharedTripPage({
                   <div>
                     <p className="font-medium">{loc.locationTitle}</p>
                     <p className="text-xs text-gray-500">
-                      <MapPin className="inline h-3 w-3" /> {loc.lat.toFixed(4)},{" "}
-                      {loc.lng.toFixed(4)}
+                      <MapPin className="inline h-3 w-3" /> {loc.lat.toFixed(4)}
+                      , {loc.lng.toFixed(4)}
                     </p>
                   </div>
                 </div>

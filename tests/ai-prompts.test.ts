@@ -1,6 +1,6 @@
 // tests/ai-prompts.test.ts - Unit tests for lib/ai-prompts.ts
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { PROMPTS } from "@/lib/ai-prompts";
 
 describe("lib/ai-prompts.ts", () => {
@@ -11,7 +11,7 @@ describe("lib/ai-prompts.ts", () => {
         "Cherry blossom viewing",
         "2026-03-01",
         "2026-03-15",
-        "Tokyo, Kyoto"
+        "Tokyo, Kyoto",
       );
 
       expect(prompt).toContain("Japan Trip");
@@ -23,7 +23,11 @@ describe("lib/ai-prompts.ts", () => {
 
     it("should request JSON output with correct structure", () => {
       const prompt = PROMPTS.generateItinerary(
-        "Test", "Desc", "2026-01-01", "2026-01-05", "Paris"
+        "Test",
+        "Desc",
+        "2026-01-01",
+        "2026-01-05",
+        "Paris",
       );
 
       expect(prompt).toContain("JSON");
@@ -37,7 +41,11 @@ describe("lib/ai-prompts.ts", () => {
 
     it("should include time, description, location, tips fields", () => {
       const prompt = PROMPTS.generateItinerary(
-        "Test", "Desc", "2026-01-01", "2026-01-05", "Paris"
+        "Test",
+        "Desc",
+        "2026-01-01",
+        "2026-01-05",
+        "Paris",
       );
 
       expect(prompt).toContain("time");
@@ -54,7 +62,7 @@ describe("lib/ai-prompts.ts", () => {
         "Backpacking across Europe",
         "2026-06-01",
         "2026-06-30",
-        "Paris, Berlin"
+        "Paris, Berlin",
       );
 
       expect(prompt).toContain("Europe Tour");
@@ -68,7 +76,7 @@ describe("lib/ai-prompts.ts", () => {
         "Description",
         "2026-01-01",
         "2026-01-05",
-        ""
+        "",
       );
 
       expect(prompt).toContain("None yet");
@@ -76,7 +84,11 @@ describe("lib/ai-prompts.ts", () => {
 
     it("should request 5-8 locations with specific fields", () => {
       const prompt = PROMPTS.suggestLocations(
-        "Test", "Desc", "2026-01-01", "2026-01-05", "None"
+        "Test",
+        "Desc",
+        "2026-01-01",
+        "2026-01-05",
+        "None",
       );
 
       expect(prompt).toContain("name");
@@ -95,7 +107,7 @@ describe("lib/ai-prompts.ts", () => {
         "Relaxing beach vacation",
         "2026-07-01",
         "2026-07-10",
-        "Ubud, Seminyak"
+        "Ubud, Seminyak",
       );
 
       expect(prompt).toContain("Bali Retreat");
@@ -105,7 +117,11 @@ describe("lib/ai-prompts.ts", () => {
 
     it("should request summary, tips, packing, budget", () => {
       const prompt = PROMPTS.generateSummary(
-        "Test", "Desc", "2026-01-01", "2026-01-05", "Place"
+        "Test",
+        "Desc",
+        "2026-01-01",
+        "2026-01-05",
+        "Place",
       );
 
       expect(prompt).toContain("summary");

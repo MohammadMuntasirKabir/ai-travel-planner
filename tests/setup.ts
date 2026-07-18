@@ -1,7 +1,7 @@
 // tests/setup.ts - Global test setup and shared mocks
 
-import { vi } from "vitest";
 import type { NextRequest } from "next/server";
+import { vi } from "vitest";
 
 // ---------------------------------------------------------------------------
 // Mock the OpenAI SDK (used by lib/ai.ts)
@@ -58,7 +58,7 @@ vi.mock("next/navigation", () => ({
 // ---------------------------------------------------------------------------
 export function createMockNextRequest(
   body: unknown,
-  method = "POST"
+  method = "POST",
 ): NextRequest {
   const url = "http://localhost:3000/api/test";
   const baseReq = new Request(url, {

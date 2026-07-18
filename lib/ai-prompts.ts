@@ -1,7 +1,13 @@
 // AI prompt templates for travel planning
 
 export const PROMPTS = {
-  generateItinerary: (title: string, description: string, startDate: string, endDate: string, locations: string) => `You are an expert travel planner. Create a detailed day-by-day itinerary for the following trip.
+  generateItinerary: (
+    title: string,
+    description: string,
+    startDate: string,
+    endDate: string,
+    locations: string,
+  ) => `You are an expert travel planner. Create a detailed day-by-day itinerary for the following trip.
 
 Trip: ${title}
 Description: ${description}
@@ -38,7 +44,13 @@ Return a JSON object with this structure:
   }
 }`,
 
-  suggestLocations: (title: string, description: string, startDate: string, endDate: string, existingLocations: string) => `You are a travel expert. Suggest interesting locations to visit for this trip.
+  suggestLocations: (
+    title: string,
+    description: string,
+    startDate: string,
+    endDate: string,
+    existingLocations: string,
+  ) => `You are a travel expert. Suggest interesting locations to visit for this trip.
 
 Trip: ${title}
 Description: ${description}
@@ -58,7 +70,13 @@ Return a JSON array of suggested locations:
 
 Suggest 5-8 locations. Be specific with addresses.`,
 
-  generateSummary: (title: string, description: string, startDate: string, endDate: string, locations: string) => `You are a travel writer. Create an engaging trip summary and travel tips.
+  generateSummary: (
+    title: string,
+    description: string,
+    startDate: string,
+    endDate: string,
+    locations: string,
+  ) => `You are a travel writer. Create an engaging trip summary and travel tips.
 
 Trip: ${title}
 Description: ${description}
@@ -80,7 +98,10 @@ Return a JSON object:
   "budgetEstimate": "A rough budget estimate with breakdown"
 }`,
 
-  locationTips: (locationName: string, tripTitle: string) => `You are a local travel guide. Provide insider tips for visiting this location.
+  locationTips: (
+    locationName: string,
+    tripTitle: string,
+  ) => `You are a local travel guide. Provide insider tips for visiting this location.
 
 Location: ${locationName}
 Trip context: ${tripTitle}

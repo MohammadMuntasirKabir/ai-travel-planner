@@ -1,22 +1,30 @@
 "use client";
 
-import { Location } from "@/app/generated/prisma";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import type { Location } from "@/app/generated/prisma";
 
-interface MapProps {
+interface MapViewProps {
   itineraries: Location[];
 }
 
-export default function Map({ itineraries }: MapProps) {
+export default function TripMap({ itineraries }: MapViewProps) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
   });
 
   if (loadError) {
-    return <div className="h-full w-full grid place-items-center text-sm text-red-500">Error loading maps</div>;
+    return (
+      <div className="h-full w-full grid place-items-center text-sm text-red-500">
+        Error loading maps
+      </div>
+    );
   }
   if (!isLoaded) {
-    return <div className="h-full w-full grid place-items-center text-sm text-gray-400">Loading maps…</div>;
+    return (
+      <div className="h-full w-full grid place-items-center text-sm text-gray-400">
+        Loading maps…
+      </div>
+    );
   }
 
   const center =

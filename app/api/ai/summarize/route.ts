@@ -1,13 +1,13 @@
 // POST /api/ai/summarize
 // Generates trip summary, packing list, and budget estimate
 
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
 import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
-import { NextRequest, NextResponse } from "next/server";
 
 async function handler(req: NextRequest) {
   try {
@@ -33,15 +33,27 @@ async function handler(req: NextRequest) {
       trip.description,
       trip.startDate.toISOString().split("T")[0],
       trip.endDate.toISOString().split("T")[0],
-      locationNames
+      locationNames,
     );
 
-    const result = await chatCompletion([
-      { role: "system", content: "You are a travel writer. Always respond with valid JSON only." },
-      { role: "user", content: prompt },
-    ], { maxTokens: 3072 });
+    const result = await chatCompletion(
+      [
+        {
+          role: "system",
+          content:
+            "You are a travel writer. Always respond with valid JSON only.",
+        },
+        { role: "user", content: prompt },
+      ],
+      { maxTokens: 3072 },
+    );
 
-    let parsed: { summary?: string; tips?: string[]; packingSuggestions?: string[]; budgetEstimate?: unknown };
+    let parsed: {
+      summary?: string;
+      tips?: string[];
+      packingSuggestions?: string[];
+      budgetEstimate?: unknown;
+    };
     try {
       parsed = extractJson(result) as typeof parsed;
     } catch {

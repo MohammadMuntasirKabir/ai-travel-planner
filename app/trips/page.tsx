@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { auth } from "@/auth";
+import type { TripWithLocations } from "@/components/trip-card";
+import TripSearch from "@/components/trip-search";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TripCard, TripWithLocations } from "@/components/trip-card";
-import TripSearch from "@/components/trip-search";
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
 
 export default async function TripsPage() {
   const session = await auth();
@@ -14,13 +14,13 @@ export default async function TripsPage() {
   });
 
   const sortedTrips = [...trips].sort(
-    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
   );
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const upcomingTrips = sortedTrips.filter(
-    (trip) => new Date(trip.startDate) >= today
+    (trip) => new Date(trip.startDate) >= today,
   );
 
   if (!session) {
@@ -77,7 +77,9 @@ export default async function TripsPage() {
             </CardContent>
           </Card>
         ) : (
-          <TripSearch trips={(sortedTrips as TripWithLocations[]).slice(0, 6)} />
+          <TripSearch
+            trips={(sortedTrips as TripWithLocations[]).slice(0, 6)}
+          />
         )}
       </div>
     </div>

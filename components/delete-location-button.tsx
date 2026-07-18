@@ -1,17 +1,15 @@
 "use client";
 
-import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 interface DeleteLocationButtonProps {
   locationId: string;
-  tripId: string;
 }
 
 export default function DeleteLocationButton({
   locationId,
-  tripId,
 }: DeleteLocationButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();

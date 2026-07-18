@@ -25,7 +25,7 @@ export default function AuthButton({
   };
 
   return (
-    <button onClick={handleClick} className={className}>
+    <button type="button" onClick={handleClick} className={className}>
       {children}
     </button>
   );

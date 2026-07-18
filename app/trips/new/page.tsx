@@ -1,12 +1,12 @@
 "use client";
 
+import Image from "next/image";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { createTrip } from "@/lib/actions/create-trip";
-import { cn } from "@/lib/utils";
 import { UploadButton } from "@/lib/upload-thing";
-import { useState, useTransition } from "react";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export default function NewTrip() {
   const [isPending, startTransition] = useTransition();
@@ -28,66 +28,82 @@ export default function NewTrip() {
             }}
           >
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 {" "}
                 Title
               </label>
               <input
+                id="title"
                 type="text"
                 name="title"
                 placeholder="Japan trip..."
                 className={cn(
                   "w-full border border-gray-300 px-3 py-2",
-                  "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
                 )}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Description
               </label>
               <textarea
+                id="description"
                 name="description"
                 placeholder="Trip description..."
                 className={cn(
                   "w-full border border-gray-300 px-3 py-2",
-                  "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
                 )}
                 required
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="startDate"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Start Date
                 </label>
                 <input
+                  id="startDate"
                   type="date"
                   name="startDate"
                   className={cn(
                     "w-full border border-gray-300 px-3 py-2",
-                    "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
                   )}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="endDate"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   {" "}
                   End Date
                 </label>
                 <input
+                  id="endDate"
                   type="date"
                   name="endDate"
                   className={cn(
                     "w-full border border-gray-300 px-3 py-2",
-                    "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
                   )}
                 />
               </div>
             </div>
             <div>
-              <label> Trip Image</label>
+              <label htmlFor="tripImage"> Trip Image</label>
 
               {imageUrl && (
                 <Image
@@ -101,7 +117,7 @@ export default function NewTrip() {
               <UploadButton
                 endpoint="imageUploader"
                 onClientUploadComplete={(res) => {
-                  if (res && res[0].ufsUrl) {
+                  if (res?.[0].ufsUrl) {
                     setImageUrl(res[0].ufsUrl);
                   }
                 }}

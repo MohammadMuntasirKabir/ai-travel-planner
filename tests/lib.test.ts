@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "./setup";
 
 // Mock fetch for geocode tests
@@ -76,17 +76,21 @@ describe("lib/actions/geocode.ts", () => {
     it("should return country and formatted address", async () => {
       mockFetch.mockResolvedValueOnce({
         json: async () => ({
-          results: [{
-            formatted_address: "Tokyo, Japan",
-            address_components: [
-              { types: ["country"], long_name: "Japan" },
-              { types: ["administrative_area_level_1"], long_name: "Tokyo" },
-            ],
-          }],
+          results: [
+            {
+              formatted_address: "Tokyo, Japan",
+              address_components: [
+                { types: ["country"], long_name: "Japan" },
+                { types: ["administrative_area_level_1"], long_name: "Tokyo" },
+              ],
+            },
+          ],
         }),
       });
 
-      const { getCountryFromCoordinates } = await import("@/lib/actions/geocode");
+      const { getCountryFromCoordinates } = await import(
+        "@/lib/actions/geocode"
+      );
       const result = await getCountryFromCoordinates(35.6762, 139.6503);
 
       expect(result).toEqual({
@@ -98,16 +102,20 @@ describe("lib/actions/geocode.ts", () => {
     it("should return Unknown when no country component found", async () => {
       mockFetch.mockResolvedValueOnce({
         json: async () => ({
-          results: [{
-            formatted_address: "Somewhere",
-            address_components: [
-              { types: ["locality"], long_name: "Some City" },
-            ],
-          }],
+          results: [
+            {
+              formatted_address: "Somewhere",
+              address_components: [
+                { types: ["locality"], long_name: "Some City" },
+              ],
+            },
+          ],
         }),
       });
 
-      const { getCountryFromCoordinates } = await import("@/lib/actions/geocode");
+      const { getCountryFromCoordinates } = await import(
+        "@/lib/actions/geocode"
+      );
       const result = await getCountryFromCoordinates(0, 0);
 
       expect(result.country).toBe("Unknown");
@@ -116,22 +124,26 @@ describe("lib/actions/geocode.ts", () => {
     it("should call Google Maps API with correct params", async () => {
       mockFetch.mockResolvedValueOnce({
         json: async () => ({
-          results: [{
-            formatted_address: "Test",
-            address_components: [{ types: ["country"], long_name: "TestCountry" }],
-          }],
+          results: [
+            {
+              formatted_address: "Test",
+              address_components: [
+                { types: ["country"], long_name: "TestCountry" },
+              ],
+            },
+          ],
         }),
       });
 
-      const { getCountryFromCoordinates } = await import("@/lib/actions/geocode");
+      const { getCountryFromCoordinates } = await import(
+        "@/lib/actions/geocode"
+      );
       await getCountryFromCoordinates(10.5, 20.3);
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("latlng=10.5,20.3")
+        expect.stringContaining("latlng=10.5,20.3"),
       );
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("key=")
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining("key="));
     });
   });
 });

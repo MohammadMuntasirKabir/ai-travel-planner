@@ -1,8 +1,8 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 
 function getGoogleMapsKey(): string {
   return (
@@ -20,14 +20,16 @@ async function geocodeAddress(address: string) {
   const apiKey = getGoogleMapsKey();
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address
-    )}&key=${apiKey}`
+      address,
+    )}&key=${apiKey}`,
   );
 
   const data = await response.json();
   const geometry = data?.results?.[0]?.geometry as GeocodeGeometry | undefined;
   if (!geometry?.location) {
-    throw new Error("Could not geocode that address. Please try a more specific location.");
+    throw new Error(
+      "Could not geocode that address. Please try a more specific location.",
+    );
   }
   const { lat, lng } = geometry.location;
   return { lat, lng };
