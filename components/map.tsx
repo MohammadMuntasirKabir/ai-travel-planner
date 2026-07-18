@@ -9,19 +9,25 @@ interface MapProps {
 
 export default function Map({ itineraries }: MapProps) {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
   });
-  if (loadError) return <div> Error loading maps</div>;
-  if (!isLoaded) return <div> Loading maps...</div>;
+
+  if (loadError) {
+    return <div className="h-full w-full grid place-items-center text-sm text-red-500">Error loading maps</div>;
+  }
+  if (!isLoaded) {
+    return <div className="h-full w-full grid place-items-center text-sm text-gray-400">Loading maps…</div>;
+  }
 
   const center =
     itineraries.length > 0
       ? { lat: itineraries[0].lat, lng: itineraries[0].lng }
-      : { lat: 0, lng: 0 };
+      : { lat: 20, lng: 0 };
+
   return (
     <GoogleMap
       mapContainerStyle={{ width: "100%", height: "100%" }}
-      zoom={8}
+      zoom={itineraries.length > 1 ? 4 : 8}
       center={center}
     >
       {itineraries.map((location, key) => (

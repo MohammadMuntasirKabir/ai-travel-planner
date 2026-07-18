@@ -4,6 +4,7 @@
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
+import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
 import { NextRequest, NextResponse } from "next/server";
@@ -41,18 +42,20 @@ async function handler(req: NextRequest) {
     ], { maxTokens: 4096 });
 
     // Extract JSON from response
-    const jsonMatch = result.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    let parsed: unknown;
+    try {
+      parsed = extractJson(result);
+    } catch {
       return new NextResponse("Failed to parse AI response", { status: 500 });
     }
 
-    // Save to database
+    // Save raw JSON to database
     await prisma.trip.update({
       where: { id: tripId },
-      data: { aiItinerary: jsonMatch[0] },
+      data: { aiItinerary: JSON.stringify(parsed) },
     });
 
-    return NextResponse.json(JSON.parse(jsonMatch[0]));
+    return NextResponse.json(parsed);
   } catch (err) {
     console.error("AI itinerary error:", err);
     return new NextResponse("Internal Error", { status: 500 });

@@ -4,6 +4,7 @@
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
+import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
 import { NextRequest, NextResponse } from "next/server";
@@ -40,12 +41,14 @@ async function handler(req: NextRequest) {
       { role: "user", content: prompt },
     ], { maxTokens: 2048 });
 
-    const jsonMatch = result.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) {
+    let parsed: unknown;
+    try {
+      parsed = extractJson(result);
+    } catch {
       return new NextResponse("Failed to parse AI response", { status: 500 });
     }
 
-    return NextResponse.json(JSON.parse(jsonMatch[0]));
+    return NextResponse.json(parsed);
   } catch (err) {
     console.error("AI suggest locations error:", err);
     return new NextResponse("Internal Error", { status: 500 });

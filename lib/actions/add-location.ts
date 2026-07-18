@@ -4,8 +4,20 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
+function getGoogleMapsKey(): string {
+  return (
+    process.env.GOOGLE_MAPS_API_KEY ??
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ??
+    ""
+  );
+}
+
+interface GeocodeGeometry {
+  location: { lat: number; lng: number };
+}
+
 async function geocodeAddress(address: string) {
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY!;
+  const apiKey = getGoogleMapsKey();
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
@@ -13,7 +25,11 @@ async function geocodeAddress(address: string) {
   );
 
   const data = await response.json();
-  const { lat, lng } = data.results[0].geometry.location;
+  const geometry = data?.results?.[0]?.geometry as GeocodeGeometry | undefined;
+  if (!geometry?.location) {
+    throw new Error("Could not geocode that address. Please try a more specific location.");
+  }
+  const { lat, lng } = geometry.location;
   return { lat, lng };
 }
 

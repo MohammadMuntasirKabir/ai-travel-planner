@@ -4,6 +4,7 @@
 import { auth } from "@/auth";
 import { chatCompletion } from "@/lib/ai";
 import { PROMPTS } from "@/lib/ai-prompts";
+import { extractJson } from "@/lib/json";
 import { prisma } from "@/lib/prisma";
 import { withRateLimit } from "@/lib/rate-limit-middleware";
 import { NextRequest, NextResponse } from "next/server";
@@ -35,17 +36,17 @@ async function handler(req: NextRequest) {
       { role: "user", content: prompt },
     ], { maxTokens: 1536 });
 
-    const jsonMatch = result.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    let parsed: unknown;
+    try {
+      parsed = extractJson(result);
+    } catch {
       return new NextResponse("Failed to parse AI response", { status: 500 });
     }
-
-    const parsed = JSON.parse(jsonMatch[0]);
 
     // Save tips to database
     await prisma.location.update({
       where: { id: locationId },
-      data: { aiTips: result },
+      data: { aiTips: JSON.stringify(parsed) },
     });
 
     return NextResponse.json(parsed);
