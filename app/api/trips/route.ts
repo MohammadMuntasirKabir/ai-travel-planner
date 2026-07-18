@@ -62,6 +62,54 @@ export async function GET() {
   }
 }
 
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return new NextResponse("Not authenticated", { status: 401 });
+    }
+
+    const locationId = new URL(req.url).searchParams.get("locationId");
+
+    if (locationId) {
+      // Delete a single location owned by the user.
+      const location = await prisma.location.findFirst({
+        where: { id: locationId, trip: { userId: session.user.id } },
+        select: { id: true },
+      });
+      if (!location) {
+        return new NextResponse("Location not found", { status: 404 });
+      }
+      await prisma.location.delete({ where: { id: locationId } });
+      return new NextResponse(null, { status: 204 });
+    }
+
+    // Otherwise expect a JSON body with { id } for trip deletion.
+    const body = await req.json().catch(() => null);
+    const tripId = body?.id;
+    if (!tripId || typeof tripId !== "string") {
+      return NextResponse.json(
+        { error: "Validation failed", details: ["id is required"] },
+        { status: 400 }
+      );
+    }
+
+    const trip = await prisma.trip.findFirst({
+      where: { id: tripId, userId: session.user.id },
+      select: { id: true },
+    });
+    if (!trip) {
+      return new NextResponse("Trip not found", { status: 404 });
+    }
+
+    await prisma.trip.delete({ where: { id: tripId } });
+    return new NextResponse(null, { status: 204 });
+  } catch (err) {
+    console.error("Trips DELETE error:", err);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();

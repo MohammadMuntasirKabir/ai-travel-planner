@@ -1,12 +1,8 @@
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TripCard, TripWithLocations } from "@/components/trip-card";
+import TripSearch from "@/components/trip-search";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
@@ -81,28 +77,7 @@ export default async function TripsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {sortedTrips.slice(0, 6).map((trip, key) => (
-              <Link key={key} href={`/trips/${trip.id}`}>
-                <Card className="h-full hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="line-clamp-1">{trip.title}</CardTitle>
-                  </CardHeader>
-
-                  <CardContent>
-                    <p className="text-sm line-clamp-2 mb-2">
-                      {trip.description}
-                    </p>
-                    <div className="text-sm">
-                      {" "}
-                      {new Date(trip.startDate).toLocaleDateString()} -{" "}
-                      {new Date(trip.endDate).toLocaleDateString()}
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
+          <TripSearch trips={(sortedTrips as TripWithLocations[]).slice(0, 6)} />
         )}
       </div>
     </div>

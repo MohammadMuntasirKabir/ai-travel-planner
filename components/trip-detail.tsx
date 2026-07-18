@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useState } from "react";
 import Map from "@/components/map";
 import SortableItinerary from "./sortable-itinerary";
+import TripActions from "./trip-actions";
 
 export type TripWithLocation = Trip & {
   locations: Location[];
@@ -51,13 +52,14 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
             </span>
           </div>
         </div>
-        <div className="mt-4 md:mt-0">
+        <div className="mt-4 md:mt-0 flex items-center gap-2">
           <Link href={`/trips/${trip.id}/itinerary/new`}>
             <Button>
               {" "}
               <Plus className="mr-2 h-5 w-5" /> Add Location
             </Button>
           </Link>
+          <TripActions tripId={trip.id} />
         </div>
       </div>
       <div className="bg-white p-6 shadow rounded-lg">

@@ -1,5 +1,5 @@
 import { Location } from "@/app/generated/prisma";
-import { reorderItinerary } from "@/lib/actions/reorder-itineraty";
+import { reorderItinerary } from "@/lib/actions/reorder-itinerary";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -9,13 +9,14 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useId, useState } from "react";
+import DeleteLocationButton from "./delete-location-button";
 
 interface SortableItineraryProps {
   locations: Location[];
   tripId: string;
 }
 
-function SortableItem({ item }: { item: Location }) {
+function SortableItem({ item, tripId }: { item: Location; tripId: string }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
 
@@ -34,7 +35,10 @@ function SortableItem({ item }: { item: Location }) {
           {`Latitude: ${item.lat}, Longitude: ${item.lng}`}
         </p>
       </div>
-      <div className="text-sm text-gray-600"> Day {item.order}</div>
+      <div className="flex items-center gap-3">
+        <div className="text-sm text-gray-600"> Day {item.order}</div>
+        <DeleteLocationButton locationId={item.id} tripId={tripId} />
+      </div>
     </div>
   );
 }
@@ -80,7 +84,7 @@ export default function SortableItinerary({
       >
         <div className="space-y-4">
           {localLocation.map((item, key) => (
-            <SortableItem key={key} item={item} />
+            <SortableItem key={key} item={item} tripId={tripId} />
           ))}
         </div>
       </SortableContext>
