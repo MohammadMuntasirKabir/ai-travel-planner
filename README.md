@@ -14,10 +14,16 @@ An AI-powered travel planning application built with **Next.js 16**, **React 19*
 - **Drag & Drop Itinerary** — Reorder destinations with @dnd-kit
 - **Image Upload** — Upload trip cover images via UploadThing
 - **GitHub OAuth** — Sign in with GitHub via NextAuth 5
-- **Rate Limiting** — In-memory sliding window rate limiter on all AI endpoints
+- **Rate Limiting** — In-memory sliding window rate limiter on all AI endpoints (correct X-RateLimit-Remaining header)
 - **Input Validation** — Structured validation on trip creation API
 - **Error Handling** — Error boundaries, loading states, not-found pages
 - **Retry Logic** — Exponential backoff for OpenRouter API calls (3 retries)
+- **Robust AI JSON Parsing** — Strips code fences / prose and extracts balanced JSON from model output
+- **Delete Trip & Location** — Remove trips and individual destinations (owner-scoped)
+- **Clone Trip** — Duplicate a trip (with all locations and AI content) in one click
+- **Public Share Link** — Generate a read-only `/shared/[tripId]` page to share plans
+- **Print / PDF Export** — Printer-optimized `/trips/[tripId]/print` view for save-as-PDF
+- **Dashboard Search** — Filter your trips instantly by title or description
 
 ## Tech Stack
 
@@ -66,7 +72,7 @@ npm run test:watch
 npm run test:coverage
 ```
 
-**68 tests** covering AI client, prompt templates, all API routes, server actions, and schema validation.
+**91 tests** covering AI client, prompt templates, all API routes, server actions, JSON parsing, rate limiting, and schema validation.
 
 ## Project Structure
 
@@ -81,9 +87,10 @@ ai-travel-planner/
 │   │   │   ├── suggest-locations/
 │   │   │   └── summarize/
 │   │   ├── auth/[...nextauth]/
-│   │   ├── trips/                 # Trip CRUD with validation
+│   │   ├── trips/                 # Trip CRUD + location delete (DELETE)
 │   │   └── uploadthing/
 │   ├── trips/                     # Trip pages
+│   ├── shared/                    # Public read-only shared trip page
 │   ├── globe/                     # 3D globe page
 │   ├── error.tsx                  # Error boundary
 │   ├── loading.tsx                # Loading state

@@ -24,7 +24,7 @@ vi.mock("next/navigation", () => ({ redirect: () => { throw new Error("redirect"
 
 import { createTrip } from "@/lib/actions/create-trip";
 import { addLocation } from "@/lib/actions/add-location";
-import { reorderItinerary } from "@/lib/actions/reorder-itineraty";
+import { reorderItinerary } from "@/lib/actions/reorder-itinerary";
 
 describe("createTrip server action", () => {
   beforeEach(() => {
@@ -100,8 +100,8 @@ describe("addLocation server action", () => {
     try {
       await addLocation(fd, "trip-123");
     } catch (e: any) {
-      // Expected - either redirect or geocode error
-      expect(e.message).toMatch(/redirect|geometry|Cannot read/);
+      // Expected - either redirect (success) or a geocode error (no API key).
+      expect(e.message).toMatch(/redirect|geocode|Cannot read/);
     }
   });
 });
