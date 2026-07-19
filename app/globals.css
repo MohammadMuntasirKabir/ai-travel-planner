@@ -80,6 +80,8 @@
    Dark: deep slate surfaces, true glass, brand accents.
    ─────────────────────────────────────────────────────────── */
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --brand-indigo: oklch(0.585 0.233 277.117);
   --brand-sky: oklch(0.685 0.169 237.323);
