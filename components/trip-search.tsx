@@ -23,7 +23,7 @@ export default function TripSearch({ trips }: { trips: TripWithLocations[] }) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search your trips…"
-        className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
+        className="w-full border border-gray-300 px-4 py-3 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 mb-6 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
       />
       {filtered.length === 0 ? (
         <p className="text-center text-gray-500 py-8">

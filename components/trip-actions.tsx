@@ -49,17 +49,23 @@ export default function TripActions({ tripId }: TripActionsProps) {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <Button variant="outline" onClick={handleCopyShare}>
+      <Button
+        variant="outline"
+        className="rounded-xl border-gray-300 hover:bg-gray-100 dark:border-white/10 dark:hover:bg-white/10"
+        onClick={handleCopyShare}
+      >
         <Share2 className="mr-2 h-4 w-4" /> Share
       </Button>
       <Button
         variant="outline"
+        className="rounded-xl border-gray-300 hover:bg-gray-100 dark:border-white/10 dark:hover:bg-white/10"
         onClick={() => router.push(`/trips/${tripId}/print`)}
       >
         <Printer className="mr-2 h-4 w-4" /> Print / PDF
       </Button>
       <Button
         variant="outline"
+        className="rounded-xl border-gray-300 hover:bg-gray-100 dark:border-white/10 dark:hover:bg-white/10"
         disabled={isCloning}
         onClick={() => startClone(() => cloneTrip(tripId))}
       >
@@ -67,6 +73,7 @@ export default function TripActions({ tripId }: TripActionsProps) {
       </Button>
       <Button
         variant="destructive"
+        className="rounded-xl"
         disabled={isDeleting}
         onClick={handleDelete}
       >

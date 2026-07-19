@@ -41,8 +41,7 @@ export default function NewTrip() {
                 name="title"
                 placeholder="Japan trip..."
                 className={cn(
-                  "w-full border border-gray-300 px-3 py-2",
-                  "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+                  "w-full border border-gray-300 px-3 py-2.5 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
                 )}
                 required
               />
@@ -59,8 +58,7 @@ export default function NewTrip() {
                 name="description"
                 placeholder="Trip description..."
                 className={cn(
-                  "w-full border border-gray-300 px-3 py-2",
-                  "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+                  "w-full border border-gray-300 px-3 py-2.5 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
                 )}
                 required
               />
@@ -79,7 +77,7 @@ export default function NewTrip() {
                   name="startDate"
                   className={cn(
                     "w-full border border-gray-300 px-3 py-2",
-                    "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
                   )}
                 />
               </div>
@@ -97,7 +95,7 @@ export default function NewTrip() {
                   name="endDate"
                   className={cn(
                     "w-full border border-gray-300 px-3 py-2",
-                    "rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
                   )}
                 />
               </div>
@@ -126,7 +124,11 @@ export default function NewTrip() {
                 }}
               />
             </div>
-            <Button type="submit" disabled={isPending} className="w-full">
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="btn-gradient w-full rounded-xl py-2.5 text-base font-semibold shadow-lg shadow-indigo-500/30 hover:brightness-110"
+            >
               {isPending ? "Creating..." : "Create Trip"}
             </Button>
           </form>

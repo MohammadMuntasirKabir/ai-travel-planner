@@ -36,22 +36,25 @@ export default async function SharedTripPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <span className="text-xl font-bold">AI Travel Planner</span>
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-indigo-50 text-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      <header className="sticky top-0 z-10 border-b border-white/40 glass dark:border-white/10">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+          <span className="text-xl font-extrabold tracking-tight">
+            <span className="text-brand-gradient">Travel</span>
+            <span className="text-gray-800 dark:text-gray-100">Planner</span>
+          </span>
           <Link
             href="/"
-            className="text-sm text-sky-600 hover:underline font-medium"
+            className="rounded-lg bg-brand-gradient px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-500/30 transition hover:brightness-110"
           >
             Plan your own trip →
           </Link>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 space-y-8">
+      <main className="container mx-auto space-y-8 px-4 py-8">
         {trip.imageUrl && (
-          <div className="w-full h-72 md:h-96 overflow-hidden rounded-xl shadow-lg relative">
+          <div className="relative h-72 w-full overflow-hidden rounded-3xl shadow-lg md:h-96">
             <Image
               src={trip.imageUrl}
               alt={trip.title}
@@ -62,22 +65,24 @@ export default async function SharedTripPage({
           </div>
         )}
 
-        <div className="bg-white p-6 shadow rounded-lg">
-          <h1 className="text-4xl font-extrabold">{trip.title}</h1>
-          <div className="flex items-center text-gray-500 mt-2">
-            <Calendar className="h-5 w-5 mr-2" />
+        <div className="rounded-3xl bg-white p-8 shadow-lg dark:bg-white/5">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
+            {trip.title}
+          </h1>
+          <div className="mt-2 flex items-center text-gray-500">
+            <Calendar className="mr-2 h-5 w-5 text-sky-500" />
             <span>
               {new Date(trip.startDate).toLocaleDateString()} -{" "}
               {new Date(trip.endDate).toLocaleDateString()}
             </span>
           </div>
-          <p className="mt-4 text-gray-600 leading-relaxed">
+          <p className="mt-4 leading-relaxed text-gray-600 dark:text-gray-300">
             {trip.description}
           </p>
         </div>
 
         {Array.isArray(packing) && packing.length > 0 && (
-          <section className="bg-white p-6 shadow rounded-lg">
+          <section className="rounded-3xl bg-white p-6 shadow-lg dark:bg-white/5">
             <h2 className="text-2xl font-semibold mb-3">Packing List</h2>
             <ul className="list-disc pl-6 space-y-1 text-gray-700">
               {(packing as string[]).map((item, i) => (
@@ -90,7 +95,7 @@ export default async function SharedTripPage({
         {Array.isArray((itinerary as { highlights?: unknown })?.highlights) &&
           ((itinerary as { highlights?: unknown[] }).highlights?.length ?? 0) >
             0 && (
-            <section className="bg-white p-6 shadow rounded-lg">
+            <section className="rounded-3xl bg-white p-6 shadow-lg dark:bg-white/5">
               <h2 className="text-2xl font-semibold mb-3">Highlights</h2>
               <ul className="list-disc pl-6 space-y-1 text-gray-700">
                 {(
@@ -102,8 +107,10 @@ export default async function SharedTripPage({
             </section>
           )}
 
-        <div className="bg-white p-6 shadow rounded-lg">
-          <h2 className="text-2xl font-semibold mb-4">Destinations</h2>
+        <div className="rounded-3xl bg-white p-6 shadow-lg dark:bg-white/5">
+          <h2 className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+            Destinations
+          </h2>
           {trip.locations.length === 0 ? (
             <p className="text-gray-500">No destinations added yet.</p>
           ) : (
@@ -111,7 +118,7 @@ export default async function SharedTripPage({
               {trip.locations.map((loc, i) => (
                 <div
                   key={loc.id}
-                  className="flex items-start gap-3 p-3 border rounded-md"
+                  className="flex items-start gap-3 rounded-xl border border-gray-200 p-3 dark:border-white/10"
                 >
                   <span className="text-sm font-bold text-gray-400 w-6">
                     {i + 1}
@@ -129,7 +136,7 @@ export default async function SharedTripPage({
           )}
         </div>
 
-        <footer className="text-center text-gray-400 text-sm py-8">
+        <footer className="py-8 text-center text-sm text-gray-400">
           Created with AI Travel Planner
         </footer>
       </main>

@@ -51,8 +51,8 @@ export default function EditTrip({ trip }: { trip: Trip }) {
             defaultValue={trip.title}
             required
             className={cn(
-              "w-full rounded-md border border-gray-300 px-3 py-2",
-              "focus:outline-none focus:ring-2 focus:ring-blue-500",
+              "w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
+              "focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500",
             )}
           />
         </div>
@@ -69,8 +69,8 @@ export default function EditTrip({ trip }: { trip: Trip }) {
             defaultValue={trip.description}
             required
             className={cn(
-              "w-full rounded-md border border-gray-300 px-3 py-2",
-              "focus:outline-none focus:ring-2 focus:ring-blue-500",
+              "w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
+              "focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500",
             )}
           />
         </div>
@@ -88,8 +88,8 @@ export default function EditTrip({ trip }: { trip: Trip }) {
               type="date"
               defaultValue={fmt(trip.startDate)}
               className={cn(
-                "w-full rounded-md border border-gray-300 px-3 py-2",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500",
+                "w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
+                "focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500",
               )}
             />
           </div>
@@ -103,15 +103,19 @@ export default function EditTrip({ trip }: { trip: Trip }) {
               type="date"
               defaultValue={fmt(trip.endDate)}
               className={cn(
-                "w-full rounded-md border border-gray-300 px-3 py-2",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500",
+                "w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-white/5 dark:text-gray-100",
+                "focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500",
               )}
             />
           </div>
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <div className="flex gap-2">
-          <Button type="submit" disabled={isPending}>
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="btn-gradient rounded-xl px-5 py-2.5 font-semibold shadow-md shadow-indigo-500/30 hover:brightness-110"
+          >
             {isPending ? "Saving…" : "Save Changes"}
           </Button>
           <Button

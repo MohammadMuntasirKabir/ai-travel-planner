@@ -48,19 +48,19 @@ export default function GlobePage() {
     }
   }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       {" "}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-center text-4xl font-bold mb-12">
+          <h1 className="text-center text-4xl font-extrabold tracking-tight mb-12 text-gray-900 dark:text-gray-100">
             {" "}
             Your Travel Journey
           </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            <div className="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="lg:col-span-2 overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-white/5">
               <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-4">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
                   {" "}
                   See where you've been...
                 </h2>
@@ -107,8 +107,8 @@ export default function GlobePage() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <p className="text-sm text-blue-800">
+                      <div className="rounded-xl bg-brand-gradient-soft p-4">
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                           {" "}
                           You've visited{" "}
                           <span className="font-bold">
@@ -125,7 +125,7 @@ export default function GlobePage() {
                           .map((country, key) => (
                             <div
                               key={key}
-                              className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors border border-gray-100"
+                              className="flex items-center gap-2 rounded-xl border border-gray-100 p-3 transition-colors hover:bg-sky-50 dark:border-white/10 dark:hover:bg-white/10"
                             >
                               <MapPin className="h-4 w-4 text-red-500" />
                               <span className="font-medium"> {country}</span>

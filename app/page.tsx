@@ -1,123 +1,151 @@
-import { Map as MapIcon } from "lucide-react";
+import { Clock, Map as MapIcon, MousePointerClick } from "lucide-react";
 import Link from "next/link";
+
+const features = [
+  {
+    icon: MapIcon,
+    title: "Interactive Maps",
+    desc: "Visualize your whole trip on interactive maps. See every destination and route at a glance.",
+    tint: "from-sky-500/20 to-indigo-500/10",
+  },
+  {
+    icon: Clock,
+    title: "Day-by-Day Itineraries",
+    desc: "Structure your adventure with AI-generated, day-by-day plans you can tweak anytime.",
+    tint: "from-indigo-500/20 to-violet-500/10",
+  },
+  {
+    icon: MousePointerClick,
+    title: "Drag & Drop Planning",
+    desc: "Rearrange stops with simple drag-and-drop. Your perfect order, in seconds.",
+    tint: "from-teal-500/20 to-sky-500/10",
+  },
+];
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-b from-white to-blue-50 py-20 md:py-32 dark:from-gray-950 dark:to-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-                Plan your perfect trip, every time
+        {/* ───────────── Hero ───────────── */}
+        <section className="relative overflow-hidden bg-brand-gradient text-white">
+          <div
+            className="glow-blob h-72 w-72 -left-10 -top-16"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(168,85,247,0.9), transparent 70%)",
+            }}
+          />
+          <div
+            className="glow-blob h-80 w-80 right-0 top-10"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(45,212,191,0.85), transparent 70%)",
+            }}
+          />
+          <div className="container relative mx-auto px-4 py-24 md:py-36">
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
+                ✨ Plan smarter with AI
+              </span>
+              <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+                Plan your perfect trip,{" "}
+                <span className="underline decoration-white/40 decoration-4 underline-offset-8">
+                  every time
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-600 mb-8 dark:text-gray-300">
-                Create itineraries, organize destinations, and share your travel
-                plans all in one place.
+              <p className="mx-auto mt-6 max-w-2xl text-lg text-white/90 md:text-xl">
+                Create AI-powered itineraries, organize destinations, and share
+                your travel plans — all in one beautiful place.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:justify-center">
                 <Link
                   href="/register"
-                  className="w-full sm:w-auto bg-black text-white hover:bg-gray-800 px-6 py-3 rounded-lg transition-colors duration-200 flex items-center justify-center dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                  className="btn-gradient inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-900/30 transition hover:brightness-110 active:scale-95"
                 >
-                  Get Started
+                  Get Started Free
                 </Link>
                 <Link
                   href="/login"
-                  className="w-full sm:w-auto border border-gray-300 text-gray-800 hover:bg-gray-100 px-6 py-3 rounded-lg transition-colors duration-200 flex items-center justify-center dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-800"
+                  className="inline-flex items-center justify-center rounded-xl border border-white/40 bg-white/10 px-7 py-3.5 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20 active:scale-95"
                 >
                   Sign In
                 </Link>
               </div>
             </div>
           </div>
-          <div
-            className="absolute bottom-0 left-0 right-0 h-24 bg-white dark:bg-gray-950"
-            style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0, 0 100%)" }}
-          />
+          <svg
+            className="block w-full text-background dark:text-gray-950"
+            viewBox="0 0 1440 80"
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            <path
+              fill="currentColor"
+              d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"
+            />
+          </svg>
         </section>
 
-        {/* Features Section */}
-        <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
+        {/* ───────────── Features ───────────── */}
+        <section className="bg-background py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
-              Plan with confidence
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="p-6 rounded-lg border border-gray-100 shadow-sm bg-white dark:border-gray-800 dark:bg-gray-900">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                  <MapIcon className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
-                  Interactive Maps
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Visualize your trip with interactive maps. See your entire
-                  itinerary at a glance.
-                </p>
-              </div>
-              <div className="p-6 rounded-lg border border-gray-100 shadow-sm bg-white dark:border-gray-800 dark:bg-gray-900">
-                <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-4">
-                  <svg
-                    className="h-6 w-6 text-travel-amber"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+            <div className="mx-auto mb-14 max-w-2xl text-center">
+              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
+                Plan with{" "}
+                <span className="text-brand-gradient">confidence</span>
+              </h2>
+              <p className="mt-3 text-gray-500 dark:text-gray-400">
+                Everything you need to turn travel ideas into a real, shareable
+                plan.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {features.map((f) => (
+                <div
+                  key={f.title}
+                  className="group rounded-2xl border border-gray-200/70 bg-white p-7 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5"
+                >
+                  <div
+                    className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${f.tint}`}
                   >
-                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                    <f.icon className="h-6 w-6 text-sky-600 dark:text-sky-400" />
+                  </div>
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    {f.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                    {f.desc}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
-                  Day-by-Day Itineraries
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Organize your trip day by day. Never miss a beat with
-                  structured planning.
-                </p>
-              </div>
-              <div className="p-6 rounded-lg border border-gray-100 shadow-sm bg-white dark:border-gray-800 dark:bg-gray-900">
-                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                  <svg
-                    className="h-6 w-6 text-green-500"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M3 15a4 4 0 004 4h9a5 5 0 10-4.5-6.5L12 7" />
-                    <path d="M15 5v4h4" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
-                  Drag & Drop Planning
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Easily rearrange your itinerary with simple drag and drop
-                  functionality.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section className="py-16 md:py-24 bg-gray-800">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to plan your next adventure?
-            </h2>
-            <p className="text-xl text-blue-50 mb-8 max-w-2xl mx-auto">
-              Join thousands of travelers who plan better trips with AI Travel
-              Planner.
-            </p>
-            <Link
-              href="/register"
-              className="inline-block bg-white text-gray-800 hover:bg-blue-50 px-6 py-3 rounded-lg transition-colors duration-200"
-            >
-              Sign Up Now
-            </Link>
+        {/* ───────────── CTA ───────────── */}
+        <section className="relative overflow-hidden py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="relative overflow-hidden rounded-3xl bg-brand-gradient px-8 py-14 text-center shadow-2xl shadow-indigo-500/20">
+              <div
+                className="glow-blob h-60 w-60 left-1/4 top-0"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%)",
+                }}
+              />
+              <h2 className="relative text-3xl font-extrabold text-white md:text-4xl">
+                Ready to plan your next adventure?
+              </h2>
+              <p className="relative mx-auto mt-4 max-w-2xl text-lg text-white/90">
+                Join travelers who plan better trips with AI Travel Planner.
+              </p>
+              <Link
+                href="/register"
+                className="relative mt-8 inline-flex items-center justify-center rounded-xl bg-white px-7 py-3.5 text-base font-semibold text-indigo-600 shadow-xl transition hover:bg-white/90 active:scale-95"
+              >
+                Sign Up Now
+              </Link>
+            </div>
           </div>
         </section>
       </main>
