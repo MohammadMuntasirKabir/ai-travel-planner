@@ -1,8 +1,8 @@
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import PrintActions from "@/components/print-actions";
 import { prisma } from "@/lib/prisma";
 
 export const metadata = {
@@ -52,21 +52,7 @@ export default async function PrintTripPage({
         }
       `}</style>
 
-      <div className="no-print mb-6 flex gap-3 print:hidden">
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="bg-black text-white px-4 py-2 rounded-md"
-        >
-          Print / Save as PDF
-        </button>
-        <Link
-          href={`/trips/${trip.id}`}
-          className="px-4 py-2 rounded-md border border-gray-300"
-        >
-          Back
-        </Link>
-      </div>
+      <PrintActions tripId={trip.id} />
 
       <h1 className="text-3xl font-extrabold">{trip.title}</h1>
       <p className="text-gray-500 mt-1">
