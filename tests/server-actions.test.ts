@@ -132,9 +132,10 @@ describe("addLocation server action", () => {
     // The geocode call will fail since there's no API key, but that's expected.
     try {
       await addLocation(fd, "trip-123");
-    } catch (e: any) {
+    } catch (e: unknown) {
       // Expected - either redirect (success) or a geocode error (no API key).
-      expect(e.message).toMatch(/redirect|geocode|Cannot read/);
+      const message = e instanceof Error ? e.message : String(e);
+      expect(message).toMatch(/redirect|geocode|Cannot read/);
     }
   });
 });

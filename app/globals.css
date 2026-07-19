@@ -123,10 +123,6 @@
   color: transparent;
 }
 
-@utility bg-surface-subtle {
-  background-color: var(--surface-subtle);
-}
-
 @utility bg-brand-tint {
   background-color: oklch(0.97 0.02 277);
 }
@@ -163,13 +159,6 @@
   transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 8px 20px -6px color-mix(in oklch, var(--brand-indigo) 50%, transparent);
 }
-@utility btn-gradient-hover {
-  filter: brightness(1.07);
-}
-@utility btn-gradient-active {
-  transform: translateY(1px);
-}
-
 @utility card-surface {
   background-color: var(--surface);
   border: 1px solid var(--border-soft);

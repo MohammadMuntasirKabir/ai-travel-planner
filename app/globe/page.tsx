@@ -32,7 +32,7 @@ export default function GlobePage() {
 
         setVisitedCountries(countries);
       } catch (err) {
-        console.error("error", err);
+        console.error("Globe: failed to load trip locations", err);
       } finally {
         setIsLoading(false);
       }
