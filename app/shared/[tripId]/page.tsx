@@ -36,7 +36,7 @@ export default async function SharedTripPage({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-indigo-50 text-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen bg-surface-subtle text-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 dark:bg-gray-950">
       <header className="sticky top-0 z-10 border-b border-white/40 glass dark:border-white/10">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <span className="text-xl font-extrabold tracking-tight">

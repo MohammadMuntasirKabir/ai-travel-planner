@@ -41,13 +41,7 @@ export default async function TripsPage() {
     <div className="container mx-auto space-y-8 px-4 py-8">
       {/* Gradient welcome banner */}
       <div className="relative overflow-hidden rounded-3xl bg-brand-gradient px-8 py-10 text-white shadow-xl shadow-indigo-500/20">
-        <div
-          className="glow-blob h-48 w-48 right-6 top-0"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(255,255,255,0.35), transparent 70%)",
-          }}
-        />
+        <div className="hero-tint" />
         <div className="relative flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <p className="text-sm font-medium text-white/80">Welcome back,</p>
@@ -81,7 +75,7 @@ export default async function TripsPage() {
         {trips.length === 0 ? (
           <Card className="border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-10">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-gradient-soft text-sky-600 dark:text-sky-300">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-tint text-sky-600 dark:text-sky-300">
                 <svg
                   viewBox="0 0 24 24"
                   className="h-7 w-7"

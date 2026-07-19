@@ -79,7 +79,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
       </div>
 
       {/* Tabbed panel */}
-      <div className="glass rounded-3xl border border-white/40 p-2 shadow-lg dark:border-white/10">
+      <div className="card-surface rounded-3xl p-2">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-2 grid w-full grid-cols-2 gap-1 rounded-2xl bg-black/5 p-1 sm:grid-cols-4 dark:bg-white/5">
             {[

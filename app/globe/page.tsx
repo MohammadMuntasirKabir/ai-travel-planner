@@ -48,7 +48,7 @@ export default function GlobePage() {
     }
   }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="min-h-screen bg-surface-subtle dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 dark:bg-gray-950">
       {" "}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">
@@ -107,7 +107,7 @@ export default function GlobePage() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      <div className="rounded-xl bg-brand-gradient-soft p-4">
+                      <div className="rounded-xl bg-brand-tint p-4">
                         <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                           {" "}
                           You've visited{" "}
