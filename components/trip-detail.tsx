@@ -5,7 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Location, Trip } from "@/app/generated/prisma";
+import AiPanels from "@/components/ai-panels";
+import EditTrip from "@/components/edit-trip";
 import TripMap from "@/components/map";
+import TripChat from "@/components/trip-chat";
 import SortableItinerary from "./sortable-itinerary";
 import TripActions from "./trip-actions";
 import { Button } from "./ui/button";
@@ -22,12 +25,22 @@ interface TripDetailClientProps {
 export default function TripDetailClient({ trip }: TripDetailClientProps) {
   const [activeTab, setActiveTab] = useState("overview");
 
+  const tripContext = {
+    title: trip.title,
+    description: trip.description,
+    startDate: trip.startDate.toISOString().split("T")[0],
+    endDate: trip.endDate.toISOString().split("T")[0],
+    locations: trip.locations.map((l) => ({ locationTitle: l.locationTitle })),
+  };
+
+  const days = Math.round(
+    (trip.endDate.getTime() - trip.startDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
+
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
-      {" "}
       {trip.imageUrl && (
         <div className="w-full h-72 md:h-96 overflow-hidden rounded-xl shadow-lg relative">
-          {" "}
           <Image
             src={trip.imageUrl}
             alt={trip.title}
@@ -37,14 +50,13 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
           />
         </div>
       )}
-      <div className="bg-white p-6 shadow rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center">
+      <div className="bg-white p-6 shadow rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center dark:bg-gray-900">
         <div>
-          <h1 className="text-4xl font-extrabold text-gray-900">
-            {" "}
+          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">
             {trip.title}
           </h1>
 
-          <div className="flex items-center text-gray-500 mt-2">
+          <div className="flex items-center text-gray-500 mt-2 dark:text-gray-400">
             <Calendar className="h-5 w-5 mr-2" />
             <span className="text-lg">
               {trip.startDate.toLocaleDateString()} -{" "}
@@ -53,16 +65,16 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
           </div>
         </div>
         <div className="mt-4 md:mt-0 flex items-center gap-2">
+          <EditTrip trip={trip} />
           <Link href={`/trips/${trip.id}/itinerary/new`}>
             <Button>
-              {" "}
               <Plus className="mr-2 h-5 w-5" /> Add Location
             </Button>
           </Link>
           <TripActions tripId={trip.id} />
         </div>
       </div>
-      <div className="bg-white p-6 shadow rounded-lg">
+      <div className="bg-white p-6 shadow rounded-lg dark:bg-gray-900">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
             <TabsTrigger value="overview" className="text-lg">
@@ -70,6 +82,9 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
             </TabsTrigger>
             <TabsTrigger value="itinerary" className="text-lg">
               Itinerary
+            </TabsTrigger>
+            <TabsTrigger value="ai" className="text-lg">
+              AI Assistant
             </TabsTrigger>
             <TabsTrigger value="map" className="text-lg">
               Map
@@ -79,20 +94,23 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
           <TabsContent value="overview" className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h2 className="text-2xl font-semibold mb-4"> Trip Summary</h2>
+                <h2 className="text-2xl font-semibold mb-4 dark:text-gray-100">
+                  {" "}
+                  Trip Summary
+                </h2>
                 <div className="space-y-4">
                   <div className="flex items-start">
                     <Calendar className="h-6 w-6 mr-3 text-gray-500" />
                     <div>
-                      <p className="font-medium text-gray-700"> Dates</p>
+                      <p className="font-medium text-gray-700 dark:text-gray-300">
+                        {" "}
+                        Dates
+                      </p>
                       <p className="text-sm text-gray-500">
                         {trip.startDate.toLocaleDateString()} -{" "}
                         {trip.endDate.toLocaleDateString()}
                         <br />
-                        {`${Math.round(
-                          (trip.endDate.getTime() - trip.startDate.getTime()) /
-                            (1000 * 60 * 60 * 24),
-                        )} days(s)`}
+                        {`${days} days(s)`}
                       </p>
                     </div>
                   </div>
@@ -117,7 +135,6 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                   <p>Add locations to see them on the map.</p>
                   <Link href={`/trips/${trip.id}/itinerary/new`}>
                     <Button>
-                      {" "}
                       <Plus className="mr-2 h-5 w-5" /> Add Location
                     </Button>
                   </Link>
@@ -125,7 +142,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               )}
 
               <div>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed dark:text-gray-300">
                   {trip.description}
                 </p>
               </div>
@@ -134,7 +151,10 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
 
           <TabsContent value="itinerary" className="space-y-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold"> Full Itinerary</h2>
+              <h2 className="text-2xl font-semibold dark:text-gray-100">
+                {" "}
+                Full Itinerary
+              </h2>
             </div>
 
             {trip.locations.length === 0 ? (
@@ -142,7 +162,6 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                 <p>Add locations to see them on the itinerary.</p>
                 <Link href={`/trips/${trip.id}/itinerary/new`}>
                   <Button>
-                    {" "}
                     <Plus className="mr-2 h-5 w-5" /> Add Location
                   </Button>
                 </Link>
@@ -150,6 +169,10 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
             ) : (
               <SortableItinerary locations={trip.locations} tripId={trip.id} />
             )}
+          </TabsContent>
+
+          <TabsContent value="ai" className="space-y-6">
+            <AiPanels trip={trip} />
           </TabsContent>
 
           <TabsContent value="map" className="space-y-6">
@@ -161,7 +184,6 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                 <p>Add locations to see them on the map.</p>
                 <Link href={`/trips/${trip.id}/itinerary/new`}>
                   <Button>
-                    {" "}
                     <Plus className="mr-2 h-5 w-5" /> Add Location
                   </Button>
                 </Link>
@@ -175,6 +197,8 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
           <Button> Back to Trips</Button>
         </Link>
       </div>
+
+      <TripChat tripTitle={trip.title} tripContext={tripContext} />
     </div>
   );
 }

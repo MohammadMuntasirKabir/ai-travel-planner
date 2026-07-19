@@ -44,8 +44,6 @@ export function checkRateLimit(req: Request): RateLimitResult {
   const remaining = Math.max(0, RATE_LIMIT_MAX_REQUESTS - valid.length);
 
   if (allowed) {
-    // Pop the entry we just pushed — we only counted it to write valid back
-    // but the caller should see remaining=true with request consumed
     return { allowed: true, remaining };
   }
 

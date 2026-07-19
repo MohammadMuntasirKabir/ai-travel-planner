@@ -9,8 +9,17 @@ import { prisma } from "@/lib/prisma";
 export default async function TripsPage() {
   const session = await auth();
 
+  if (!session?.user) {
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-700 text-xl">
+        {" "}
+        Please Sign In.
+      </div>
+    );
+  }
+
   const trips = await prisma.trip.findMany({
-    where: { userId: session?.user?.id },
+    where: { userId: session.user.id },
   });
 
   const sortedTrips = [...trips].sort(
@@ -22,15 +31,6 @@ export default async function TripsPage() {
   const upcomingTrips = sortedTrips.filter(
     (trip) => new Date(trip.startDate) >= today,
   );
-
-  if (!session) {
-    return (
-      <div className="flex justify-center items-center h-screen text-gray-700 text-xl">
-        {" "}
-        Please Sign In.
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6 container mx-auto px-4 py-8">

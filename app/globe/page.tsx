@@ -58,7 +58,7 @@ export default function GlobePage() {
           </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            <div className="lg:col-span-2 bg-white ronded-xl shadow-lg overflow-hidden">
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="p-6">
                 <h2 className="text-2xl font-semibold mb-4">
                   {" "}
@@ -125,7 +125,7 @@ export default function GlobePage() {
                           .map((country, key) => (
                             <div
                               key={key}
-                              className="flex items-center gap-2 p-3 rounded-lg hover: bg-gray-50 transition-colors border border-gray-100"
+                              className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors border border-gray-100"
                             >
                               <MapPin className="h-4 w-4 text-red-500" />
                               <span className="font-medium"> {country}</span>

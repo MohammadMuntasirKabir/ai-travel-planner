@@ -1,36 +1,44 @@
 # AI Travel Planner
 
-An AI-powered travel planning application built with **Next.js 16**, **React 19**, **Prisma**, **NextAuth 5**, and **OpenRouter**. Generate intelligent itineraries, get location suggestions, receive insider tips, and chat with an AI travel assistant.
+An AI-powered travel planning application built with **Next.js 16**, **React 19**, **Prisma**, **NextAuth 5**, and **OpenRouter**. Generate intelligent itineraries, get location suggestions, receive insider tips, chat with an AI travel assistant, and visualize your journeys on interactive maps and a 3D globe.
+
+Live demo: https://ai-travel-planner-azure-chi.vercel.app/
 
 ## Features
 
-- **AI Itinerary Generator** — Generate full day-by-day itineraries from trip details
-- **AI Location Suggester** — Get smart location recommendations for your trip
-- **AI Trip Summary** — Auto-generate trip summaries, packing lists, and budget estimates
-- **AI Location Tips** — Get insider tips for each destination
-- **AI Travel Chat** — Streaming chat assistant for travel advice
+### Core
+- **Trip Management** — Create, edit, clone, and delete trips (owner-scoped)
+- **Drag & Drop Itinerary** — Reorder destinations with `@dnd-kit`
+- **Inline Location Editing** — Rename any destination without leaving the page
 - **Interactive Maps** — Visualize destinations with Google Maps
-- **3D Globe** — View your travel journey on an interactive globe
-- **Drag & Drop Itinerary** — Reorder destinations with @dnd-kit
+- **3D Globe** — See your travel journey on an interactive globe (auto-rotating)
 - **Image Upload** — Upload trip cover images via UploadThing
-- **GitHub OAuth** — Sign in with GitHub via NextAuth 5
-- **Rate Limiting** — In-memory sliding window rate limiter on all AI endpoints (correct X-RateLimit-Remaining header)
-- **Input Validation** — Structured validation on trip creation API
+- **Public Share Link** — Generate a read-only `/shared/[tripId]` page
+- **Print / PDF Export** — Printer-optimized `/trips/[tripId]/print` view
+- **Dashboard Search** — Filter trips instantly by title or description
+- **Dark Mode** — Toggle light/dark with a no-flash theme switcher
+
+### AI (powered by OpenRouter)
+- **AI Itinerary Generator** — Day-by-day itineraries with activities and budget breakdown
+- **AI Location Suggester** — Smart location recommendations for your trip
+- **AI Trip Summary** — Auto-generated summary, packing list, and budget estimate
+- **AI Location Tips** — Per-destination insider tips, must-tries, and what to avoid
+- **AI Travel Chat** — Streaming chat assistant with live trip context
+
+### Engineering
+- **GitHub OAuth** — Sign in via NextAuth 5
+- **Rate Limiting** — In-memory sliding window on all AI endpoints (`X-RateLimit-Remaining`)
+- **Input Validation** — Structured validation on trip creation/update APIs
 - **Error Handling** — Error boundaries, loading states, not-found pages
 - **Retry Logic** — Exponential backoff for OpenRouter API calls (3 retries)
-- **Robust AI JSON Parsing** — Strips code fences / prose and extracts balanced JSON from model output
-- **Delete Trip & Location** — Remove trips and individual destinations (owner-scoped)
-- **Clone Trip** — Duplicate a trip (with all locations and AI content) in one click
-- **Public Share Link** — Generate a read-only `/shared/[tripId]` page to share plans
-- **Print / PDF Export** — Printer-optimized `/trips/[tripId]/print` view for save-as-PDF
-- **Dashboard Search** — Filter your trips instantly by title or description
+- **Robust AI JSON Parsing** — Strips code fences / prose and extracts balanced JSON
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 16 (App Router, Turbopack) |
-| UI | React 19, Tailwind CSS 4, shadcn/ui |
+| UI | React 19, Tailwind CSS 4, shadcn/ui-style primitives |
 | Database | PostgreSQL with Prisma 6 |
 | Auth | NextAuth 5 (GitHub OAuth) |
 | AI | OpenRouter API (Gemini, Claude, GPT, etc.) |
@@ -39,13 +47,12 @@ An AI-powered travel planning application built with **Next.js 16**, **React 19*
 | File Upload | UploadThing |
 | DnD | @dnd-kit |
 | Testing | Vitest + React Testing Library |
-| Language | TypeScript 6 |
+| Language | TypeScript |
 
 ## Getting Started
 
 ### Prerequisites
-
-- Node.js 18+
+- Node.js 18+ (Node 20+ recommended)
 - PostgreSQL database
 - OpenRouter API key
 - GitHub OAuth App credentials
@@ -57,22 +64,57 @@ git clone git@github.com:MohammadMuntasirKabir/ai-travel-planner.git
 cd ai-travel-planner
 npm install
 cp .env.example .env.local
-# Fill in DATABASE_URL, AUTH_SECRET, AUTH_GITHUB_ID, AUTH_GITHUB_SECRET, OPENROUTER_API_KEY
+```
+
+Fill in `.env.local`:
+- `DATABASE_URL` — your PostgreSQL connection string
+- `AUTH_SECRET` — generate with `openssl rand -base64 32`
+- `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` — from your GitHub OAuth app
+- `OPENROUTER_API_KEY` — from https://openrouter.ai/keys
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` — from Google Cloud (Maps JavaScript API)
+- `UPLOADTHING_TOKEN` — optional, from https://uploadthing.com
+
+Then run migrations and start:
+
+```bash
 npx prisma migrate dev
 npm run dev
 ```
 
-Open [http://localhost:3003](http://localhost:3003)
+Open http://localhost:3003
 
-### Running Tests
+### Environment Variables
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `DATABASE_URL` | Yes | PostgreSQL connection |
+| `AUTH_SECRET` | Yes | NextAuth session encryption |
+| `AUTH_GITHUB_ID` | Yes | GitHub OAuth client id |
+| `AUTH_GITHUB_SECRET` | Yes | GitHub OAuth client secret |
+| `OPENROUTER_API_KEY` | Yes | AI provider key |
+| `OPENROUTER_MODEL` | No | Defaults to `openai/gpt-oss-20b:free` |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Yes (maps) | Google Maps + geocoding |
+| `GOOGLE_MAPS_API_KEY` | No | Server-only geocoding key (falls back to public) |
+| `UPLOADTHING_TOKEN` | No | Image uploads |
+
+## Scripts
 
 ```bash
-npm test          # Run all tests
-npm run test:watch
+npm run dev          # Start dev server (Turbopack)
+npm run build        # Production build
+npm start            # Serve production build
+npm run lint         # Biome check + Stylelint
+npm run lint:fix     # Auto-fix lint issues
+npm run format       # Format with Biome
+npm test             # Run all tests (Vitest)
+npm run test:watch   # Watch mode
 npm run test:coverage
 ```
 
-**91 tests** covering AI client, prompt templates, all API routes, server actions, JSON parsing, rate limiting, and schema validation.
+## Testing
+
+**91 tests** across 14 files covering the AI client, prompt templates, all API routes,
+server actions, JSON parsing, rate limiting, and schema validation.
 
 ## Project Structure
 
@@ -87,31 +129,31 @@ ai-travel-planner/
 │   │   │   ├── suggest-locations/
 │   │   │   └── summarize/
 │   │   ├── auth/[...nextauth]/
-│   │   ├── trips/                 # Trip CRUD + location delete (DELETE)
+│   │   ├── trips/                 # Trip CRUD + location delete
 │   │   └── uploadthing/
 │   ├── trips/                     # Trip pages
 │   ├── shared/                    # Public read-only shared trip page
 │   ├── globe/                     # 3D globe page
-│   ├── error.tsx                  # Error boundary
-│   ├── loading.tsx                # Loading state
-│   ├── not-found.tsx              # 404 page
-│   ├── page.tsx                   # Landing page
-│   └── layout.tsx                 # Root layout with metadata
-├── components/                    # React components + shadcn/ui
+│   ├── error.tsx / loading.tsx / not-found.tsx
+│   ├── layout.tsx                 # Root layout + theme boot script
+│   └── page.tsx                   # Landing page
+├── components/
+│   ├── ai-panels.tsx              # Itinerary / summary / tips / suggestions UI
+│   ├── trip-chat.tsx              # Streaming AI chat assistant
+│   ├── edit-trip.tsx / edit-location.tsx
+│   ├── trip-detail.tsx / trip-card.tsx / trip-search.tsx
+│   ├── sortable-itinerary.tsx / map.tsx / navbar.tsx
+│   ├── theme-toggle.tsx / auth-button.tsx
+│   └── ui/                        # button, card, tabs primitives
 ├── lib/
-│   ├── ai.ts                      # OpenRouter client with retry logic
-│   ├── ai-prompts.ts              # AI prompt templates
-│   ├── actions/                   # Server actions (typed geocode)
-│   ├── prisma.ts                  # Prisma client
-│   ├── rate-limit.ts              # In-memory rate limiter
-│   ├── rate-limit-middleware.ts   # Rate limit HOF for API routes
-│   ├── upload-thing.ts            # UploadThing helpers
-│   └── validation.ts              # Input validation helpers
-├── prisma/
-│   ├── schema.prisma
-│   └── migrations/
-├── tests/                         # 68 tests across 10 files
-└── vitest.config.ts
+│   ├── ai.ts                      # OpenRouter client + retry
+│   ├── ai-prompts.ts              # Prompt templates
+│   ├── actions/                   # Server actions (typed)
+│   ├── prisma.ts / validation.ts / json.ts
+│   ├── rate-limit.ts / rate-limit-middleware.ts
+│   └── upload-thing.ts
+├── prisma/                        # schema + migrations
+└── tests/                         # Vitest suite
 ```
 
 ## License

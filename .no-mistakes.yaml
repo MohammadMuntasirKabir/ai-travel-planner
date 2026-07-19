@@ -3,6 +3,6 @@
 agent: pi
 
 commands:
-  test: "npx vitest run 2>&1 | tail -30"
-  lint: "npx next lint 2>&1"
-  format: "npx prettier --check . 2>&1"
+  test: "npm test 2>&1 | tail -30"
+  lint: "npm run lint 2>&1 | tail -30"
+  format: "npm run format 2>&1 | tail -30"

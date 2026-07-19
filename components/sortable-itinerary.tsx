@@ -8,6 +8,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { useId, useState } from "react";
 import type { Location } from "@/app/generated/prisma";
+import EditLocation from "@/components/edit-location";
 import { reorderItinerary } from "@/lib/actions/reorder-itinerary";
 import DeleteLocationButton from "./delete-location-button";
 
@@ -29,7 +30,10 @@ function SortableItem({ item }: { item: Location }) {
       className="p-4 border rounded-md flex justify-between items-center hover:shadow transition-shadow"
     >
       <div>
-        <h4 className="font-medium text-gray-800"> {item.locationTitle}</h4>
+        <h4 className="font-medium text-gray-800">{item.locationTitle}</h4>
+        <div className="mt-1">
+          <EditLocation locationId={item.id} title={item.locationTitle} />
+        </div>
         <p className="text-sm text-gray-500 truncate max-w-xs">
           {" "}
           {`Latitude: ${item.lat}, Longitude: ${item.lng}`}

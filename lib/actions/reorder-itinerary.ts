@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function reorderItinerary(_tripId: string, newOrder: string[]) {
   const session = await auth();
