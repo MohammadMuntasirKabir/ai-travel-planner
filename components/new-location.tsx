@@ -9,7 +9,7 @@ export default function NewLocationClient({ tripId }: { tripId: string }) {
   const [isPending, startTransation] = useTransition();
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-surface-subtle px-4">
+    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center app-bg px-4">
       <div className="w-full max-w-md">
         <div className="glass rounded-3xl border border-white/40 p-8 shadow-2xl dark:border-white/10">
           <div className="mb-6 flex flex-col items-center text-center">

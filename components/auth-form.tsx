@@ -87,7 +87,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-indigo-50/70 via-white to-teal-50/60 px-4 py-10 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center app-bg px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-lg shadow-indigo-500/30">

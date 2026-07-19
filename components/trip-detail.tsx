@@ -38,7 +38,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
   );
 
   return (
-    <div className="container mx-auto space-y-8 px-4 py-8">
+    <div className="container mx-auto min-h-screen space-y-8 px-4 py-8 app-bg">
       {/* Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-brand-gradient shadow-xl shadow-indigo-500/20">
         {trip.imageUrl && (

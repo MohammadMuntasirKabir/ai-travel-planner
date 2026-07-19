@@ -21,7 +21,7 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50/70 via-white to-teal-50/60 text-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 dark:text-gray-100">
+    <div className="flex min-h-screen flex-col app-bg">
       <main className="flex-1">
         {/* ───────────── Hero ───────────── */}
         <section className="relative overflow-hidden bg-brand-gradient text-white">

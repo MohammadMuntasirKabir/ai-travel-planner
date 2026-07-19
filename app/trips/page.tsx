@@ -38,7 +38,7 @@ export default async function TripsPage() {
   );
 
   return (
-    <div className="container mx-auto space-y-8 px-4 py-8">
+    <div className="container mx-auto min-h-screen space-y-8 px-4 py-8 app-bg">
       {/* Gradient welcome banner */}
       <div className="relative overflow-hidden rounded-3xl bg-brand-gradient px-8 py-10 text-white shadow-xl shadow-indigo-500/20">
         <div className="hero-tint" />
