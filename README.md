@@ -33,6 +33,16 @@ Live demo: https://ai-travel-planner-azure-chi.vercel.app/
 - **Retry Logic** — Exponential backoff for OpenRouter API calls (3 retries)
 - **Robust AI JSON Parsing** — Strips code fences / prose and extracts balanced JSON
 
+## Screenshots
+
+| Landing (light) | Landing (dark) | 3D Globe |
+|---|---|---|
+| ![Landing](public/screenshots/landing.png) | ![Landing dark](public/screenshots/landing-dark.png) | ![Globe](public/screenshots/globe.png) |
+
+> The trip detail page (AI itinerary, summary, per-location tips, streaming
+> chat, edit, share, print) and dashboard require GitHub sign-in. After
+> authenticating you get the full AI-assisted planning experience.
+
 ## Tech Stack
 
 | Layer | Technology |
