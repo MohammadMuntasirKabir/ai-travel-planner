@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import type { Session } from "next-auth";
-import ThemeToggle from "@/components/theme-toggle";
 import { logout } from "@/lib/auth-actions";
 
 export default function Navbar({ session }: { session: Session | null }) {
@@ -33,7 +32,6 @@ export default function Navbar({ session }: { session: Session | null }) {
         </Link>
 
         <div className="flex items-center space-x-2 sm:space-x-5">
-          <ThemeToggle />
           {session ? (
             <>
               <Link
