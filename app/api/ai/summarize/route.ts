@@ -73,7 +73,10 @@ async function handler(req: NextRequest) {
     return NextResponse.json(parsed);
   } catch (err) {
     console.error("AI summarize error:", err);
-    return new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse(
+      `Internal Error: ${err instanceof Error ? err.stack || err.message : String(err)}`,
+      { status: 500 },
+    );
   }
 }
 
