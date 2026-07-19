@@ -17,11 +17,14 @@ type TripWithLocations = Trip & { locations: Location[] };
 type ItineraryData = {
   itinerary?: Array<{
     day?: number;
+    date?: string;
     title?: string;
     activities?: Array<{
       time?: string;
       description?: string;
       location?: string;
+      category?: string;
+      needs?: string;
       tips?: string;
     }>;
   }>;
@@ -61,7 +64,7 @@ function SectionCard({
         {icon}
         {title}
       </h3>
-      {empty ? <p className="text-sm text-gray-400">{empty}</p> : children}
+      {empty ? <p className="text-sm text-gray-600">{empty}</p> : children}
     </div>
   );
 }
@@ -179,16 +182,21 @@ export default function AiPanels({ trip }: { trip: TripWithLocations }) {
       >
         {itinerary?.itinerary?.map((day, i) => (
           <div key={i} className="mb-4">
-            <h4 className="font-semibold text-gray-800">
+            <h4 className="font-semibold text-gray-800 dark:text-gray-100">
               Day {day.day ?? i + 1}
               {day.title ? ` — ${day.title}` : ""}
             </h4>
-            <ul className="ml-4 list-disc text-sm text-gray-700">
+            <ul className="ml-4 list-disc text-sm text-gray-700 dark:text-gray-300">
               {(day.activities ?? []).map((a, j) => (
                 <li key={j}>
                   {a.time ? `${a.time} — ` : ""}
                   {a.description ?? ""}
                   {a.location ? ` (${a.location})` : ""}
+                  {a.category ? (
+                    <span className="ml-1 rounded bg-indigo-50 px-1.5 py-0.5 text-[11px] font-medium text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                      {a.category}
+                    </span>
+                  ) : null}
                   {a.tips ? ` — ${a.tips}` : ""}
                 </li>
               ))}
@@ -279,7 +287,7 @@ export default function AiPanels({ trip }: { trip: TripWithLocations }) {
                     </Button>
                   </div>
                   {!tip && (
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       Generate insider tips for this destination.
                     </p>
                   )}

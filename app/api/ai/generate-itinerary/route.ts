@@ -27,13 +27,17 @@ async function handler(req: NextRequest) {
       return new NextResponse("Trip not found", { status: 404 });
     }
 
-    const locationNames = trip.locations.map((l) => l.locationTitle).join(", ");
+    const mapLocations = trip.locations.map((l) => ({
+      name: l.locationTitle,
+      lat: l.lat,
+      lng: l.lng,
+    }));
     const prompt = PROMPTS.generateItinerary(
       trip.title,
       trip.description,
       trip.startDate.toISOString().split("T")[0],
       trip.endDate.toISOString().split("T")[0],
-      locationNames,
+      mapLocations,
     );
 
     const result = await chatCompletion(

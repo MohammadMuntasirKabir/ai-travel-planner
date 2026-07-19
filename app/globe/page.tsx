@@ -48,7 +48,7 @@ export default function GlobePage() {
     }
   }, []);
   return (
-    <div className="min-h-screen bg-surface-subtle dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 dark:bg-gray-950">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50/70 via-white to-teal-50/60 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       {" "}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">

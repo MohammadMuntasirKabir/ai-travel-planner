@@ -11,14 +11,17 @@ describe("lib/ai-prompts.ts", () => {
         "Cherry blossom viewing",
         "2026-03-01",
         "2026-03-15",
-        "Tokyo, Kyoto",
+        [
+          { name: "Tokyo", lat: 35.68, lng: 139.69 },
+          { name: "Kyoto", lat: 35.01, lng: 135.77 },
+        ],
       );
 
       expect(prompt).toContain("Japan Trip");
       expect(prompt).toContain("Cherry blossom viewing");
       expect(prompt).toContain("2026-03-01");
       expect(prompt).toContain("2026-03-15");
-      expect(prompt).toContain("Tokyo, Kyoto");
+      expect(prompt).toContain("Tokyo (35.68, 139.69)");
     });
 
     it("should request JSON output with correct structure", () => {
@@ -27,7 +30,7 @@ describe("lib/ai-prompts.ts", () => {
         "Desc",
         "2026-01-01",
         "2026-01-05",
-        "Paris",
+        [{ name: "Paris", lat: 48.85, lng: 2.35 }],
       );
 
       expect(prompt).toContain("JSON");
@@ -45,7 +48,7 @@ describe("lib/ai-prompts.ts", () => {
         "Desc",
         "2026-01-01",
         "2026-01-05",
-        "Paris",
+        [{ name: "Paris", lat: 48.85, lng: 2.35 }],
       );
 
       expect(prompt).toContain("time");

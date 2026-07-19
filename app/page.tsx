@@ -21,7 +21,7 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-surface-subtle">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50/70 via-white to-teal-50/60 text-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 dark:text-gray-100">
       <main className="flex-1">
         {/* ───────────── Hero ───────────── */}
         <section className="relative overflow-hidden bg-brand-gradient text-white">
@@ -58,7 +58,7 @@ export default function LandingPage() {
             </div>
           </div>
           <svg
-            className="block w-full text-surface-subtle dark:text-gray-950"
+            className="block w-full text-white dark:text-gray-950"
             viewBox="0 0 1440 80"
             preserveAspectRatio="none"
             aria-hidden
@@ -78,7 +78,7 @@ export default function LandingPage() {
                 Plan with{" "}
                 <span className="text-brand-gradient">confidence</span>
               </h2>
-              <p className="mt-3 text-gray-500 dark:text-gray-400">
+              <p className="mt-3 text-gray-600 dark:text-gray-400">
                 Everything you need to turn travel ideas into a real, shareable
                 plan.
               </p>
@@ -95,7 +95,7 @@ export default function LandingPage() {
                   <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
                     {f.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                  <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
                     {f.desc}
                   </p>
                 </div>

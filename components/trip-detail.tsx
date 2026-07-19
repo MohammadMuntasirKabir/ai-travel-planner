@@ -112,7 +112,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                         <p className="font-medium text-gray-700 dark:text-gray-300">
                           Dates
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-700">
                           {trip.startDate.toLocaleDateString()} -{" "}
                           {trip.endDate.toLocaleDateString()}
                           <br />
@@ -126,7 +126,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                         <p className="font-medium text-gray-700 dark:text-gray-300">
                           Destinations
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-700">
                           {trip.locations.length}{" "}
                           {trip.locations.length === 1
                             ? "location"
@@ -136,7 +136,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                     </div>
                   </div>
                   <div className="mt-6">
-                    <p className="leading-relaxed text-gray-600 dark:text-gray-300">
+                    <p className="leading-relaxed text-gray-700 dark:text-gray-300">
                       {trip.description}
                     </p>
                   </div>
