@@ -73,51 +73,64 @@ export default function AiPanels({ trip }: { trip: TripWithLocations }) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const [busy, startBusy] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+
+  const runAi = (fn: () => Promise<void>) =>
+    startBusy(async () => {
+      setError(null);
+      try {
+        await fn();
+      } catch {
+        setError(
+          "The AI service is temporarily unavailable. Please try again later.",
+        );
+      }
+    });
 
   const generateItinerary = () =>
-    startBusy(async () => {
+    runAi(async () => {
       const res = await fetch("/api/ai/generate-itinerary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tripId: trip.id }),
       });
-      if (res.ok) setItinerary((await res.json()) as ItineraryData);
+      if (!res.ok) throw new Error(await res.text());
+      setItinerary((await res.json()) as ItineraryData);
     });
 
   const generateSummary = () =>
-    startBusy(async () => {
+    runAi(async () => {
       const res = await fetch("/api/ai/summarize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tripId: trip.id }),
       });
-      if (res.ok) setSummary((await res.json()) as SummaryData);
+      if (!res.ok) throw new Error(await res.text());
+      setSummary((await res.json()) as SummaryData);
     });
 
   const fetchTips = (locationId: string) =>
-    startBusy(async () => {
+    runAi(async () => {
       const res = await fetch("/api/ai/location-tips", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ locationId, tripTitle: trip.title }),
       });
-      if (res.ok) {
-        const tipsData = (await res.json()) as LocationTipsData;
-        setTips((prev) => ({ ...prev, [locationId]: tipsData }));
-      }
+      if (!res.ok) throw new Error(await res.text());
+      const tipsData = (await res.json()) as LocationTipsData;
+      setTips((prev) => ({ ...prev, [locationId]: tipsData }));
     });
 
   const suggestLocations = () =>
-    startBusy(async () => {
+    runAi(async () => {
       const res = await fetch("/api/ai/suggest-locations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tripId: trip.id }),
       });
-      if (res.ok) {
-        const data = (await res.json()) as Array<{ name?: string }>;
-        setSuggestions(data.map((d) => d.name ?? "").filter(Boolean));
-      }
+      if (!res.ok) throw new Error(await res.text());
+      const data = (await res.json()) as Array<{ name?: string }>;
+      setSuggestions(data.map((d) => d.name ?? "").filter(Boolean));
     });
 
   return (
@@ -133,6 +146,14 @@ export default function AiPanels({ trip }: { trip: TripWithLocations }) {
           <MapPin className="mr-2 h-4 w-4" /> Suggest Locations
         </Button>
       </div>
+
+      {error && (
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error.includes("429") || error.toLowerCase().includes("rate")
+            ? "The AI rate limit has been reached. Please try again later or add OpenRouter credits."
+            : error}
+        </div>
+      )}
 
       {suggestions.length > 0 && (
         <SectionCard

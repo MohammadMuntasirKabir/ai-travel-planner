@@ -58,8 +58,10 @@ async function handler(req: NextRequest) {
 
     return NextResponse.json(parsed);
   } catch (err) {
-    console.error("AI location tips error:", err);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.error("AI location-tips error:", err);
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status = message.includes("429") ? 429 : 500;
+    return new NextResponse(message, { status });
   }
 }
 

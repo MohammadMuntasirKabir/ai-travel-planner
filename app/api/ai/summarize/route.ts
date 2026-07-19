@@ -73,10 +73,9 @@ async function handler(req: NextRequest) {
     return NextResponse.json(parsed);
   } catch (err) {
     console.error("AI summarize error:", err);
-    return new NextResponse(
-      `Internal Error: ${err instanceof Error ? err.stack || err.message : String(err)}`,
-      { status: 500 },
-    );
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status = message.includes("429") ? 429 : 500;
+    return new NextResponse(message, { status });
   }
 }
 
