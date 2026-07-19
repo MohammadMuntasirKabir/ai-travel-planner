@@ -21,7 +21,7 @@ export function TripCard({ trip }: { trip: TripWithLocations }) {
             {new Date(trip.startDate).toLocaleDateString()} -
             {new Date(trip.endDate).toLocaleDateString()}
           </div>
-          {trip.locations.length > 0 && (
+          {trip.locations?.length > 0 && (
             <div className="text-xs text-gray-500 mt-1">
               {trip.locations.length}{" "}
               {trip.locations.length === 1 ? "location" : "locations"}

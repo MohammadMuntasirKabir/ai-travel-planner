@@ -20,6 +20,7 @@ export default async function TripsPage() {
 
   const trips = await prisma.trip.findMany({
     where: { userId: session.user.id },
+    include: { locations: true },
   });
 
   const sortedTrips = [...trips].sort(
