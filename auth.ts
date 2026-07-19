@@ -71,6 +71,7 @@ if (process.env.AUTH_APPLE_ID && process.env.AUTH_APPLE_SECRET) {
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers,
+  trustHost: true,
   session: { strategy: "database" },
   pages: {
     signIn: "/login",

@@ -93,6 +93,9 @@ npx prisma migrate dev
 npm run dev
 ```
 
+> If you deploy, run `npx prisma migrate deploy` against your production
+> `DATABASE_URL` so the `username` / `password` columns exist for email login.
+
 Open http://localhost:3003
 
 ### Environment Variables
