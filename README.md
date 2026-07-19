@@ -26,7 +26,9 @@ Live demo: https://ai-travel-planner-azure-chi.vercel.app/
 - **AI Travel Chat** — Streaming chat assistant with live trip context
 
 ### Engineering
-- **GitHub OAuth** — Sign in via NextAuth 5
+- **Email/Password Accounts** — Register with email + password (bcrypt-hashed); sign in with email or username
+- **Social Login** — Google, Facebook, and Apple OAuth (configurable; only configured providers appear)
+- **Professional Auth UI** — Branded sign-in / sign-up pages with social buttons and inline validation
 - **Rate Limiting** — In-memory sliding window on all AI endpoints (`X-RateLimit-Remaining`)
 - **Input Validation** — Structured validation on trip creation/update APIs
 - **Error Handling** — Error boundaries, loading states, not-found pages
@@ -50,7 +52,7 @@ Live demo: https://ai-travel-planner-azure-chi.vercel.app/
 | Framework | Next.js 16 (App Router, Turbopack) |
 | UI | React 19, Tailwind CSS 4, shadcn/ui-style primitives |
 | Database | PostgreSQL with Prisma 6 |
-| Auth | NextAuth 5 (GitHub OAuth) |
+| Auth | NextAuth 5 (Email/Password + Google/Facebook/Apple OAuth) |
 | AI | OpenRouter API (Gemini, Claude, GPT, etc.) |
 | Maps | @react-google-maps/api |
 | Globe | react-globe.gl + Three.js |
@@ -65,7 +67,7 @@ Live demo: https://ai-travel-planner-azure-chi.vercel.app/
 - Node.js 18+ (Node 20+ recommended)
 - PostgreSQL database
 - OpenRouter API key
-- GitHub OAuth App credentials
+- (Optional) Google / Facebook / Apple OAuth app credentials
 
 ### Setup
 
@@ -99,13 +101,17 @@ Open http://localhost:3003
 |---|---|---|
 | `DATABASE_URL` | Yes | PostgreSQL connection |
 | `AUTH_SECRET` | Yes | NextAuth session encryption |
-| `AUTH_GITHUB_ID` | Yes | GitHub OAuth client id |
-| `AUTH_GITHUB_SECRET` | Yes | GitHub OAuth client secret |
+| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | No | Google OAuth |
+| `AUTH_FACEBOOK_ID` / `AUTH_FACEBOOK_SECRET` | No | Facebook OAuth |
+| `AUTH_APPLE_ID` / `AUTH_APPLE_SECRET` | No | Apple OAuth |
 | `OPENROUTER_API_KEY` | Yes | AI provider key |
 | `OPENROUTER_MODEL` | No | Defaults to `openai/gpt-oss-20b:free` |
 | `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Yes (maps) | Google Maps + geocoding |
 | `GOOGLE_MAPS_API_KEY` | No | Server-only geocoding key (falls back to public) |
 | `UPLOADTHING_TOKEN` | No | Image uploads |
+
+> Email/password authentication works with **no OAuth secrets configured**.
+> Add the Google/Facebook/Apple pairs to enable those social buttons.
 
 ## Scripts
 
@@ -144,16 +150,20 @@ ai-travel-planner/
 │   ├── trips/                     # Trip pages
 │   ├── shared/                    # Public read-only shared trip page
 │   ├── globe/                     # 3D globe page
-│   ├── error.tsx / loading.tsx / not-found.tsx
-│   ├── layout.tsx                 # Root layout + theme boot script
-│   └── page.tsx                   # Landing page
+│   ├── auth/[...nextauth]/
+│   ├── trips/                 # Trip CRUD + location delete
+│   └── uploadthing/
+├── app/
+│   ├── login/                 # Sign-in page
+│   ├── register/              # Sign-up page
 ├── components/
-│   ├── ai-panels.tsx              # Itinerary / summary / tips / suggestions UI
-│   ├── trip-chat.tsx              # Streaming AI chat assistant
+│   ├── auth-form.tsx          # Professional login/register UI
+│   ├── ai-panels.tsx          # Itinerary / summary / tips / suggestions UI
+│   ├── trip-chat.tsx          # Streaming AI chat assistant
 │   ├── edit-trip.tsx / edit-location.tsx
 │   ├── trip-detail.tsx / trip-card.tsx / trip-search.tsx
 │   ├── sortable-itinerary.tsx / map.tsx / navbar.tsx
-│   ├── theme-toggle.tsx / auth-button.tsx
+│   ├── theme-toggle.tsx
 │   └── ui/                        # button, card, tabs primitives
 ├── lib/
 │   ├── ai.ts                      # OpenRouter client + retry

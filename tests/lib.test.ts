@@ -48,21 +48,23 @@ describe("lib/auth-actions.ts", () => {
     mockSignOut.mockReset();
   });
 
-  describe("login", () => {
-    it("should call signIn with GitHub provider", async () => {
+  describe("loginWithProvider", () => {
+    it("should call signIn with the requested provider", async () => {
       mockSignIn.mockResolvedValueOnce(undefined);
-      const { login } = await import("@/lib/auth-actions");
-      await login();
-      expect(mockSignIn).toHaveBeenCalledWith("github", { redirectTo: "/" });
+      const { loginWithProvider } = await import("@/lib/auth-actions");
+      await loginWithProvider("google");
+      expect(mockSignIn).toHaveBeenCalledWith("google", {
+        redirectTo: "/trips",
+      });
     });
   });
 
   describe("logout", () => {
-    it("should call signOut with redirect", async () => {
+    it("should call signOut with redirect to /login", async () => {
       mockSignOut.mockResolvedValueOnce(undefined);
       const { logout } = await import("@/lib/auth-actions");
       await logout();
-      expect(mockSignOut).toHaveBeenCalledWith({ redirectTo: "/" });
+      expect(mockSignOut).toHaveBeenCalledWith({ redirectTo: "/login" });
     });
   });
 });
