@@ -21,11 +21,11 @@ const features = [
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col app-bg">
+    <div className="flex min-h-screen flex-col app-bg dark:dark-app-bg">
       <main className="flex-1">
         {/* ───────────── Hero ───────────── */}
         <section className="relative overflow-hidden bg-brand-gradient text-white">
-          <div className="hero-tint" />
+          <div className="hero-tint dark:dark-hero-tint" />
           <div className="container relative mx-auto px-4 py-24 md:py-36">
             <div className="mx-auto max-w-3xl text-center">
               <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
@@ -87,7 +87,7 @@ export default function LandingPage() {
               {features.map((f) => (
                 <div
                   key={f.title}
-                  className="card-surface group rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1"
+                  className="card-surface dark:dark-card-surface group rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-gradient text-white shadow-md shadow-indigo-500/25">
                     <f.icon className="h-6 w-6" />
@@ -108,7 +108,7 @@ export default function LandingPage() {
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="relative overflow-hidden rounded-3xl bg-brand-gradient px-8 py-14 text-center shadow-xl shadow-indigo-500/20">
-              <div className="hero-tint" />
+              <div className="hero-tint dark:dark-hero-tint" />
               <div className="relative">
                 <h2 className="text-3xl font-extrabold text-white md:text-4xl">
                   Ready to plan your next adventure?

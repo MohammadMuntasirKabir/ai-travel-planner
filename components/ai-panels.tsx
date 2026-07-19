@@ -64,7 +64,7 @@ function SectionCard({
         {icon}
         {title}
       </h3>
-      {empty ? <p className="text-sm text-gray-600">{empty}</p> : children}
+      {empty ? <p className="text-sm text-indigo-700">{empty}</p> : children}
     </div>
   );
 }
@@ -186,7 +186,7 @@ export default function AiPanels({ trip }: { trip: TripWithLocations }) {
               Day {day.day ?? i + 1}
               {day.title ? ` — ${day.title}` : ""}
             </h4>
-            <ul className="ml-4 list-disc text-sm text-gray-700 dark:text-gray-300">
+            <ul className="ml-4 list-disc text-sm text-indigo-800 dark:text-gray-300">
               {(day.activities ?? []).map((a, j) => (
                 <li key={j}>
                   {a.time ? `${a.time} — ` : ""}
@@ -287,7 +287,7 @@ export default function AiPanels({ trip }: { trip: TripWithLocations }) {
                     </Button>
                   </div>
                   {!tip && (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-indigo-700">
                       Generate insider tips for this destination.
                     </p>
                   )}

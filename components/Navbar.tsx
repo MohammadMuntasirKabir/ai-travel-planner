@@ -7,7 +7,7 @@ import { logout } from "@/lib/auth-actions";
 
 export default function Navbar({ session }: { session: Session | null }) {
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/20 glass dark:border-white/10">
+    <nav className="sticky top-0 z-50 border-b border-white/20 glass dark:dark-glass dark:border-white/10">
       <div className="container mx-auto flex justify-between items-center px-6 lg:px-8 py-3">
         <Link href={"/"} className="flex items-center gap-2 group">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-gradient text-white shadow-lg shadow-indigo-500/30 transition-transform group-hover:scale-105">

@@ -48,7 +48,7 @@ export default function GlobePage() {
     }
   }, []);
   return (
-    <div className="min-h-screen app-bg">
+    <div className="min-h-screen app-bg dark:dark-app-bg">
       {" "}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">

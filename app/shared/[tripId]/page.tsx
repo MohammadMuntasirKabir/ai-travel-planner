@@ -36,8 +36,8 @@ export default async function SharedTripPage({
   }
 
   return (
-    <div className="min-h-screen app-bg">
-      <header className="sticky top-0 z-10 border-b border-white/40 glass dark:border-white/10">
+    <div className="min-h-screen app-bg dark:dark-app-bg">
+      <header className="sticky top-0 z-10 border-b border-white/40 glass dark:dark-glass dark:border-white/10">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <span className="text-xl font-extrabold tracking-tight">
             <span className="text-brand-gradient">Travel</span>
@@ -69,7 +69,7 @@ export default async function SharedTripPage({
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
             {trip.title}
           </h1>
-          <div className="mt-2 flex items-center text-gray-500">
+          <div className="mt-2 flex items-center text-indigo-600 dark:text-gray-400">
             <Calendar className="mr-2 h-5 w-5 text-sky-500" />
             <span>
               {new Date(trip.startDate).toLocaleDateString()} -{" "}
@@ -112,7 +112,9 @@ export default async function SharedTripPage({
             Destinations
           </h2>
           {trip.locations.length === 0 ? (
-            <p className="text-gray-500">No destinations added yet.</p>
+            <p className="text-indigo-600 dark:text-gray-400">
+              No destinations added yet.
+            </p>
           ) : (
             <div className="space-y-3">
               {trip.locations.map((loc, i) => (
@@ -125,7 +127,7 @@ export default async function SharedTripPage({
                   </span>
                   <div>
                     <p className="font-medium">{loc.locationTitle}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-indigo-600 dark:text-gray-400">
                       <MapPin className="inline h-3 w-3" /> {loc.lat.toFixed(4)}
                       , {loc.lng.toFixed(4)}
                     </p>

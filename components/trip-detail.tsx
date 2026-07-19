@@ -38,7 +38,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
   );
 
   return (
-    <div className="container mx-auto min-h-screen space-y-8 px-4 py-8 app-bg">
+    <div className="container mx-auto min-h-screen space-y-8 px-4 py-8 app-bg dark:dark-app-bg">
       {/* Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-brand-gradient shadow-xl shadow-indigo-500/20">
         {trip.imageUrl && (
@@ -79,7 +79,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
       </div>
 
       {/* Tabbed panel */}
-      <div className="card-surface rounded-3xl p-2">
+      <div className="card-surface dark:dark-card-surface rounded-3xl p-2">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-2 grid w-full grid-cols-2 gap-1 rounded-2xl bg-black/5 p-1 sm:grid-cols-4 dark:bg-white/5">
             {[
@@ -136,7 +136,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                     </div>
                   </div>
                   <div className="mt-6">
-                    <p className="leading-relaxed text-gray-700 dark:text-gray-300">
+                    <p className="leading-relaxed text-indigo-800 dark:text-gray-300">
                       {trip.description}
                     </p>
                   </div>
@@ -147,7 +147,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               </div>
               {trip.locations.length === 0 && (
                 <div className="rounded-2xl border border-dashed border-gray-300 p-6 text-center dark:border-white/10">
-                  <p className="mb-3 text-gray-500 dark:text-gray-400">
+                  <p className="mb-3 text-indigo-600 dark:text-gray-400">
                     Add locations to see them on the map.
                   </p>
                   <Link href={`/trips/${trip.id}/itinerary/new`}>
@@ -165,7 +165,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               </h2>
               {trip.locations.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-gray-300 p-6 text-center dark:border-white/10">
-                  <p className="mb-3 text-gray-500 dark:text-gray-400">
+                  <p className="mb-3 text-indigo-600 dark:text-gray-400">
                     Add locations to see them on the itinerary.
                   </p>
                   <Link href={`/trips/${trip.id}/itinerary/new`}>
@@ -192,7 +192,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               </div>
               {trip.locations.length === 0 && (
                 <div className="rounded-2xl border border-dashed border-gray-300 p-6 text-center dark:border-white/10">
-                  <p className="mb-3 text-gray-500 dark:text-gray-400">
+                  <p className="mb-3 text-indigo-600 dark:text-gray-400">
                     Add locations to see them on the map.
                   </p>
                   <Link href={`/trips/${trip.id}/itinerary/new`}>

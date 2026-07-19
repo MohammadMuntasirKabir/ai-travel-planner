@@ -38,10 +38,10 @@ export default async function TripsPage() {
   );
 
   return (
-    <div className="container mx-auto min-h-screen space-y-8 px-4 py-8 app-bg">
+    <div className="container mx-auto min-h-screen space-y-8 px-4 py-8 app-bg dark:dark-app-bg">
       {/* Gradient welcome banner */}
       <div className="relative overflow-hidden rounded-3xl bg-brand-gradient px-8 py-10 text-white shadow-xl shadow-indigo-500/20">
-        <div className="hero-tint" />
+        <div className="hero-tint dark:dark-hero-tint" />
         <div className="relative flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <p className="text-sm font-medium text-white/80">Welcome back,</p>
@@ -94,7 +94,7 @@ export default async function TripsPage() {
               <h3 className="mb-1 text-lg font-semibold text-gray-800 dark:text-gray-100">
                 No trips yet.
               </h3>
-              <p className="mb-5 max-w-sm text-center text-sm text-gray-500 dark:text-gray-400">
+              <p className="mb-5 max-w-sm text-center text-sm text-indigo-700 dark:text-gray-400">
                 Start planning your adventure by creating your first trip.
               </p>
               <Link href="/trips/new">
